@@ -1,5 +1,5 @@
 # dex-cal
-Angular Calendar component with predefined ranges
+#### Angular Calendar component with predefined ranges
 
 Common tasks are present as npm scripts:
 
