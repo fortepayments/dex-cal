@@ -34,7 +34,7 @@
       rxjs: {
         defaultExtension: 'js'
       },
-      'dex-cal-lib': {
+      'dex-cal': {
         main: 'index.js',
         defaultExtension: 'js'
       }
