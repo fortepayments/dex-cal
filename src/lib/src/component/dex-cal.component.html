@@ -1,18 +1,28 @@
-<button (click)="previousMonth()"><</button>
-{{months[selectedMonth]}}
-<button (click)="nextMonth()">></button>
-{{selectedYear}}
-<table>
-    <thead>
-        <th>Sun</th>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thur</th>
-        <th>Fri</th>
-        <th>Sat</th>
-    </thead>
-    <tr *ngFor="let week of weeks">
-        <td *ngFor="let day of week">{{day > 0 ? day: ''}}</td>
-    </tr>
-</table>
+<div (click)="showCalendar=!showCalendar">
+    {{options.label}} : {{selectedRange}}
+
+</div>
+<div *ngIf="showCalendar">
+    <button (click)="previousMonth()"><</button> {{months[selectedMonth]}}
+    <button (click)="nextMonth()">></button>
+
+    <button (click)="previousYear()"><</button> {{selectedYear}}
+    <button (click)="nextYear()">></button>
+    <ul>
+        <li *ngFor="let range of options.ranges" (click)="setRange(range.daysBackFromToday)">{{range.label}}</li>
+    </ul>
+    <table>
+        <thead>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thur</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </thead>
+        <tr *ngFor="let week of weeks">
+            <td *ngFor="let day of week">{{day > 0 ? day: ''}}</td>
+        </tr>
+    </table>
+</div>

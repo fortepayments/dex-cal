@@ -1,24 +1,34 @@
+/// <reference path="./jasmine-custom-matchers.d.ts"/>
+
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DexCalComponent } from './dex-cal.component';
+import { DexCalComponent, DexSelectedRange } from './dex-cal.component';
+import { customDateMatchers } from './jasmine-custom-matchers';
 
-describe('Component', function () {
+describe('dex-cal component', function () {
   let de: DebugElement;
   let comp: DexCalComponent;
   let fixture: ComponentFixture<DexCalComponent>;
+  let today: Date;
+  let yesterday: Date;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DexCalComponent]
     })
       .compileComponents();
+
+    jasmine.addMatchers(customDateMatchers);
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DexCalComponent);
     comp = fixture.componentInstance;
+    today = new Date();
+    yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
   });
 
   it('should create component', () => expect(comp).toBeDefined());
@@ -47,7 +57,7 @@ describe('Component', function () {
 
   });
 
-    describe('Prev month button', () => {
+  describe('Prev month button', () => {
     it('should change month to previous month', () => {
       const expected = 5;
       comp.selectedMonth = 6;
@@ -60,10 +70,54 @@ describe('Component', function () {
       comp.selectedYear = 2017;
       comp.selectedMonth = 0;
       comp.previousMonth();
-      console.log(comp.selectedYear);
       expect(comp.selectedYear).toEqual(expected);
     });
 
   });
 
+
+  describe('Year', () => {
+
+    it('should go back a year upon clicking previous year', () => {
+      const expected = 2016;
+      comp.selectedYear = 2017;
+      comp.previousYear();
+      expect(comp.selectedYear).toEqual(expected);
+    });
+
+    it('should go forward a year upon clicking next year', () => {
+      const expected = 2018;
+      comp.selectedYear = 2017;
+      comp.nextYear();
+      expect(comp.selectedYear).toEqual(expected);
+    });
+  });
+
+
+  it('should have a default range of yesterday set', () => {
+    expect(comp.startDate).toBeTheSameDate(yesterday);
+  });
+
+  it('should let one change the range using setRange', () => {
+    let aWeekAgo = new Date();
+    aWeekAgo.setDate(today.getDate() - 7);
+    comp.setRange(7);
+    expect(comp.startDate).toBeTheSameDate(aWeekAgo);
+    //sdf
+  });
+
+  it('should set the enddate today if a predefined range is chosen', () => {
+    expect(comp.endDate).toBeTheSameDate(today);
+  });
+
+
+  it('should fire a selected event when a range is selected', () => {
+    comp.selected.subscribe((eventData: DexSelectedRange) => {
+      expect(eventData.startDate).toBeTheSameDate(yesterday);
+      expect(eventData.endDate).toBeTheSameDate(today);
+    });
+    comp.setRange(1);
+  });
+
 });
+
