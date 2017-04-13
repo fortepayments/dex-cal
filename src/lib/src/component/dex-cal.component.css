@@ -106,11 +106,23 @@ p.selected.date {
     transition: color 0.3s ease;
 }
 
-div.calendar>div.weeks-container>ul:nth-child(5)>li:nth-child(1)>a {
+.selected-date {
     background-color: #148eff;
     color: white;
     padding: 0.5rem;
     border-radius: 10%;
+}
+
+.date-in-range {
+    background-color: lightblue;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 10%;   
+}
+
+.selected-range {
+    color: #148eff;
+    transition: color 0.3s ease;
 }
 
 @keyframes open {

@@ -1,5 +1,5 @@
-<div class="toggle" (click)="showCalendar=!showCalendar">
-    <span>{{options.label}} : {{selectedRange}}</span><span>▾</span>
+<div class="toggle" (click)="toggleCalendar()">
+    <span>{{allOptions.label}} : {{selectedRangeText}}</span><span>▾</span>
 </div>
 
 <div class="calendar-container" *ngIf="showCalendar">
@@ -8,7 +8,8 @@
             Thursday <br> April 13th
         </p>
         <ul>
-            <li *ngFor="let range of options.ranges" (click)="setRange(range.daysBackFromToday)"><a>{{range.label}}</a></li>
+            <li *ngFor="let range of allOptions.ranges" (click)="setRange(range.daysBackFromToday)" [ngClass]="{'selected-range': (numberOfDaysInRange === range.daysBackFromToday) && (endDate === today)}"><a>{{range.label}}</a></li>
+            <li (click)="setCustomRange()"><a>Custom</a></li>
         </ul>
     </div>
     <div class="calendar">
@@ -31,7 +32,7 @@
             </ul>
 
             <ul class="weeks" *ngFor="let week of weeks">
-                <li class="days" *ngFor="let day of week"><a>{{day > 0 ? day: ''}}</a></li>
+                <li class="days" *ngFor="let day of week" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}"><a>{{day.date > 0 ? day.date: ''}}</a></li>
             </ul>
         </div>
     </div>

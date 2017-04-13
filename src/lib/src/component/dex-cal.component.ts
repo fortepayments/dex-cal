@@ -1,3 +1,4 @@
+import { DexCalOptions, DexCalRange, DexSelectedRange } from './models';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 import { Calendar, MONTHS } from './calendar';
@@ -11,6 +12,9 @@ import { Calendar, MONTHS } from './calendar';
 export class DexCalComponent {
   @Input() options: DexCalOptions;
   @Output() selected = new EventEmitter<DexSelectedRange>();
+  @Input() startDate: Date;
+  @Input() endDate: Date;
+  allOptions: DexCalOptions = {};
   defaultOptions: DexCalOptions = {
     label: 'Label',
     ranges: [
@@ -24,27 +28,28 @@ export class DexCalComponent {
   };
 
   cal: Calendar;
-  weeks: Date[];
+  weeks: Array<any>;
   months = MONTHS;
   selectedMonth: number;
   selectedYear: number;
-  selectedRange: string;
-  startDate: Date = new Date();
-  endDate: Date = new Date();
+  selectedRangeText: string;
   showCalendar = false;
-
-  private today = new Date();
+  numberOfDaysInRange: number;
+  today = new Date();
 
   constructor() {
+    // initialize start and end date if not passed
+    this.startDate = this.startDate || new Date();
+    this.endDate = this.endDate || this.today;
+
     // merge the options
-    this.options = this.options ? Object.assign(this.options, this.defaultOptions) : this.defaultOptions;
+    this.allOptions = this.options ? Object.assign(this.allOptions, this.options, this.defaultOptions) : this.defaultOptions;
 
     this.cal = new Calendar();
     this.selectedMonth = this.today.getMonth();
     this.selectedYear = this.today.getFullYear();
-    const defaultRange = this.options.ranges && this.options.ranges.length > 0 ? this.options.ranges[0].daysBackFromToday : 1;
+    const defaultRange = this.allOptions.ranges && this.allOptions.ranges.length > 0 ? this.allOptions.ranges[0].daysBackFromToday : 1;
     this.setRange(defaultRange);
-    this.selectedRange = 'Select date range';
     this.getWeeks();
   }
 
@@ -78,30 +83,68 @@ export class DexCalComponent {
   }
 
   setRange(days: number) {
+    this.numberOfDaysInRange = days;
     this.startDate.setDate(this.today.getDate() - days);
+    this.endDate = this.today;
     this.selected.emit({
-       startDate: this.startDate,
-       endDate: this.endDate
+      startDate: this.startDate,
+      endDate: this.endDate
     });
+    this.showCalendar = false;
+    this.setRangeText();
+    this.getWeeks();
+  }
+
+  setCustomRange() {
+
+  }
+
+  toggleCalendar() {
+    this.showCalendar = !this.showCalendar;
+    if (this.showCalendar) {
+      this.getWeeks();
+    }
+  }
+  private setRangeText() {
+    this.selectedRangeText = this.startDate && this.endDate ?
+      this.selectedRangeText = `${this.formatDate(this.startDate)} - ${this.formatDate(this.endDate)}`
+      : 'Select date range';
+  }
+
+  private formatDate(date: Date) {
+    return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;
   }
 
   private getWeeks() {
-    this.weeks = this.cal.monthDays(this.selectedYear, this.selectedMonth);
+    this.weeks = [];
+    let daysInMonth = this.cal.monthDays(this.selectedYear, this.selectedMonth);
+    daysInMonth.forEach((week: number[]) => {
+      let daysOfWeek: Day[] = [];
+      week.forEach((day: number) => {
+        daysOfWeek.push({
+          date: day.toString(),
+          isSelected: this.isSameDate(this.startDate, day) || this.isSameDate(this.endDate, day),
+          isInRange: this.isInRange(day)
+        });
+      })
+      this.weeks.push(daysOfWeek);
+    });
+  }
+
+  private isSameDate(expected: Date, actual: number): boolean {
+    return !!(expected.getDate() === actual && expected.getMonth() === this.selectedMonth
+      && expected.getFullYear() === this.selectedYear);
+  }
+
+  private isInRange(day: number): boolean {
+    return (this.startDate.getDate() < day && this.startDate.getMonth() <= this.selectedMonth
+      && this.startDate.getFullYear() <= this.selectedYear) && (this.endDate.getDate() > day &&
+        this.endDate.getMonth() >= this.selectedMonth && this.endDate.getFullYear() >= this.selectedYear);
   }
 }
 
-export interface DexCalOptions {
-  label?: string;
-  ranges?: DexCalRange[];
-  allowCustomDates?: boolean;
-}
-
-export interface DexCalRange {
-  label: string;
-  daysBackFromToday: number;
-}
-
-export interface DexSelectedRange {
-  startDate: Date;
-  endDate: Date;
+export interface Day {
+  date: string;
+  isSelected: boolean;
+  isInRange: boolean;
 }

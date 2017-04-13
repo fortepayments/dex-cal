@@ -4,8 +4,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DexCalComponent, DexSelectedRange } from './dex-cal.component';
+import { DexCalComponent} from './dex-cal.component';
 import { customDateMatchers } from './jasmine-custom-matchers';
+import { DexSelectedRange } from './models';
 
 describe('dex-cal component', function () {
   let de: DebugElement;
@@ -118,6 +119,7 @@ describe('dex-cal component', function () {
     });
     comp.setRange(1);
   });
+  
 
 });
 
