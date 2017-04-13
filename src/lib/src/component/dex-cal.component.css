@@ -1,0 +1,125 @@
+.calendar-container {
+    height: 397px;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    color: #a3a3a3;
+    font: inherit;
+    border-radius: 3px;
+    /*box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);*/
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, .2);
+    animation-fill-mode: both;
+    animation: open 300ms cubic-bezier(.39, 0, .38, 1);
+}
+
+.options {
+    /* background-color: #7FBEEB; */
+    color: inherit;
+    padding: 0 40px;
+    padding-bottom: 40px;
+    line-height: 3;
+    border-right: 1px solid rgba(211, 211, 211, 0.52);
+}
+
+.options ul>li>a {
+    cursor: pointer;
+}
+
+.options ul>li>a:hover {
+    color: #148eff;
+    border-bottom: 2px solid currentColor;
+    transition: color 0.3s ease;
+}
+
+p.selected.date {
+    line-height: 1.2;
+    font-size: 3.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: lightgray;
+}
+
+.calendar {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-controls {
+    /*flex: 1;*/
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    color: inherit;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(211, 211, 211, 0.52);
+    width: 100%;
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+.calendar-controls button.arrow {
+    background: transparent;
+    border: none;
+    color: #148eff;
+    font-size: 14px;
+    padding: 0 4rem;
+    outline: 0;
+    cursor: pointer;
+}
+
+.weekdays,
+.weeks {
+    display: grid;
+    /*grid-template: repeat(7, 55px);*/
+    grid-template-columns: repeat(7, 55px);
+    grid-gap: 10px;
+}
+
+.weeks-container {
+    min-height: 240px;
+    padding: 2rem;
+}
+
+.weekdays li {
+    text-align: center;
+    color: inherit;
+}
+
+.days {
+    height: 24px;
+    text-align: center;
+    margin: auto auto;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+}
+
+.days :hover {
+    color: #148eff;
+    transition: color 0.3s ease;
+}
+
+div.calendar>div.weeks-container>ul:nth-child(5)>li:nth-child(1)>a {
+    background-color: #148eff;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 10%;
+}
+
+@keyframes open {
+    0% {
+        opacity: 0;
+        transform: translatey(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translatey(0px);
+    }
+}

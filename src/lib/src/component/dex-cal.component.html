@@ -1,28 +1,38 @@
-<div (click)="showCalendar=!showCalendar">
-    {{options.label}} : {{selectedRange}}
-
+<div class="toggle" (click)="showCalendar=!showCalendar">
+    <span>{{options.label}} : {{selectedRange}}</span><span>▾</span>
 </div>
-<div *ngIf="showCalendar">
-    <button (click)="previousMonth()"><</button> {{months[selectedMonth]}}
-    <button (click)="nextMonth()">></button>
 
-    <button (click)="previousYear()"><</button> {{selectedYear}}
-    <button (click)="nextYear()">></button>
-    <ul>
-        <li *ngFor="let range of options.ranges" (click)="setRange(range.daysBackFromToday)">{{range.label}}</li>
-    </ul>
-    <table>
-        <thead>
-            <th>Sun</th>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thur</th>
-            <th>Fri</th>
-            <th>Sat</th>
-        </thead>
-        <tr *ngFor="let week of weeks">
-            <td *ngFor="let day of week">{{day > 0 ? day: ''}}</td>
-        </tr>
-    </table>
+<div class="calendar-container" *ngIf="showCalendar">
+    <div class="options">
+        <p class="selected date">
+            Thursday <br> April 13th
+        </p>
+        <ul>
+            <li *ngFor="let range of options.ranges" (click)="setRange(range.daysBackFromToday)"><a>{{range.label}}</a></li>
+        </ul>
+    </div>
+    <div class="calendar">
+
+        <div class="calendar-controls">
+            <button class="arrow" (click)="previousMonth()">〈</button> {{months[selectedMonth]}}
+            <button class="arrow" (click)="nextMonth()">〉</button>
+            <button class="arrow" (click)="previousYear()">〈</button> {{selectedYear}}
+            <button class="arrow" (click)="nextYear()">〉</button>
+        </div>
+        <div class="weeks-container">
+            <ul class="weekdays">
+                <li>Sun</li>
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thur</li>
+                <li>Fri</li>
+                <li>Sat</li>
+            </ul>
+
+            <ul class="weeks" *ngFor="let week of weeks">
+                <li class="days" *ngFor="let day of week"><a>{{day > 0 ? day: ''}}</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
