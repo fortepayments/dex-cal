@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fortepayments/dex-cal.svg?branch=master)](https://travis-ci.org/fortepayments/dex-cal)
+
 # dex-cal
 #### Angular Calendar component with predefined ranges
 
