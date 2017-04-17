@@ -1,5 +1,8 @@
 <div class="toggle" (click)="toggleCalendar()">
-    <span>{{allOptions.label}} : {{selectedRangeText}}</span><span>▾</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><style>.a{fill:none;stroke-width:2;stroke:#fff;}</style><g transform="translate(0 0)"><line x1="1" y1="9" x2="23" y2="9" class="a"/><rect x="1" y="3" width="22" height="20" class="a"/><line x1="12" y1="1" x2="12" y2="5" class="a"/><line x1="6" y1="1" x2="6" y2="5" class="a"/><line x1="18" y1="1" x2="18" y2="5" class="a"/><line data-color="color-2" x1="12" y1="19" x2="12" y2="13" class="a"/><line data-color="color-2" x1="15" y1="16" x2="9" y2="16" class="a"/></g></svg>
+    <span>{{selectedRangeText}}</span>
+    <span>▾</span>
+    <!--<span>{{allOptions.label}} : {{selectedRangeText}}</span><span>▾</span>-->
 </div>
 
 <div class="calendar-container" *ngIf="showCalendar">
@@ -16,10 +19,14 @@
     <div class="calendar">
 
         <div class="calendar-controls">
-            <button class="arrow" (click)="previousMonth()">〈</button> {{months[selectedMonth]}}
-            <button class="arrow" (click)="nextMonth()">〉</button>
-            <button class="arrow" (click)="previousYear()">〈</button> {{selectedYear}}
-            <button class="arrow" (click)="nextYear()">〉</button>
+            <div>
+                <button class="arrow" (click)="previousMonth()">〈</button> {{months[selectedMonth]}}
+                <button class="arrow" (click)="nextMonth()">〉</button>
+            </div>
+            <div>
+                <button class="arrow" (click)="previousYear()">〈</button> {{selectedYear}}
+                <button class="arrow" (click)="nextYear()">〉</button>
+            </div>
         </div>
         <div class="weeks-container">
             <ul class="weekdays">

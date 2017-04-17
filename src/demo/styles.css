@@ -9,9 +9,6 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100%;
     width: 100%;
     color: #a3a3a3;
@@ -23,37 +20,101 @@ body {
     background: #ffbf86;
 }
 
-.toggle {
-    white-space: nowrap;
-    padding: 10px 30px;
-    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
-    background: #fff;
-    border-radius: 4px;
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    width: 211px;
-    margin-bottom: 1rem;
+h1 {
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0;
+    letter-spacing: 2rem;
+    margin-top: 0;
     text-transform: uppercase;
-    text-align: center;
-    cursor: pointer;
-    -webkit-transition: all .15s ease;
-    transition: all .15s ease;
 }
 
-.toggle:hover {
-    color: #6e6e6e;
-    transform: translateY(-1px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+h2 {
+    font-weight: 300;
+    /* font-size: 36px; */
+    color: white;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    letter-spacing: 1rem;
 }
 
-.toggle:active {
-    color: #555;
-    background-color: #f6f9ff;
-    transform: translateY(1px);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+p {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+
+.container {
+    display: grid;
+    grid-template: repeat(4, 1fr) / repeat(2, 1fr);
+    grid-row-gap: 40px;
+    grid-template-areas: 'header header header' 'content content content' 'content content content';
+}
+
+header {
+    grid-area: header;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 120px;
+    background-color: #148eff;
+    color: #fff;
+}
+
+header p {
+    margin-bottom: 0;
+}
+
+a.github-button {
+    COLOR: #ffffff;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    margin-left: 1rem;
+}
+
+section {
+    grid-area: content;
+    padding: 40px 80px;
+}
+
+
+/*footer {
+    grid-area: footer;
+    background-color: #F2EFEA;
+}*/
+
+.toggle {
+    width: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    font: inherit;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
+    border: 0;
+    border-radius: 3px;
+    outline: 0;
+    margin-bottom: 1rem;
+}
+
+.toggle>svg {
+    padding-right: 1rem;
+    padding: 12px 12px;
+    background-color: #148eff;
+    border-radius: 3px 0 0 3px;
+}
+
+.toggle>span:nth-child(2) {
+    padding: 12px 12px;
+    flex: 1;
+}
+
+.toggle>span {
+    padding: 12px 12px
 }
 
 ul {
