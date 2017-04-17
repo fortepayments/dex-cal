@@ -39,7 +39,6 @@ describe('dex-cal component', function () {
     expect(comp.weeks.length).toBeGreaterThan(0);
   });
 
-
   describe('Next month button', () => {
     it('should change month to next month', () => {
       const expected = 1;
@@ -55,7 +54,6 @@ describe('dex-cal component', function () {
       comp.nextMonth();
       expect(comp.selectedYear).toEqual(expected);
     });
-
   });
 
   describe('Prev month button', () => {
@@ -73,12 +71,9 @@ describe('dex-cal component', function () {
       comp.previousMonth();
       expect(comp.selectedYear).toEqual(expected);
     });
-
   });
 
-
   describe('Year', () => {
-
     it('should go back a year upon clicking previous year', () => {
       const expected = 2016;
       comp.selectedYear = 2017;
@@ -94,7 +89,6 @@ describe('dex-cal component', function () {
     });
   });
 
-
   it('should have a default range of yesterday set', () => {
     expect(comp.startDate).toBeTheSameDate(yesterday);
   });
@@ -104,7 +98,6 @@ describe('dex-cal component', function () {
     aWeekAgo.setDate(today.getDate() - 7);
     comp.setRange(7);
     expect(comp.startDate).toBeTheSameDate(aWeekAgo);
-    //sdf
   });
 
   it('should set the enddate today if a predefined range is chosen', () => {
@@ -119,7 +112,4 @@ describe('dex-cal component', function () {
     });
     comp.setRange(1);
   });
-  
-
 });
-

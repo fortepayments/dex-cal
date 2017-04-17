@@ -1,4 +1,4 @@
-import { DexCalOptions, DexCalRange, DexSelectedRange } from './models';
+import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 import { Calendar, MONTHS } from './calendar';
@@ -10,6 +10,7 @@ import { Calendar, MONTHS } from './calendar';
   styleUrls: ['./dex-cal.component.css']
 })
 export class DexCalComponent {
+
   @Input() options: DexCalOptions;
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
@@ -35,9 +36,17 @@ export class DexCalComponent {
   selectedRangeText: string;
   showCalendar = false;
   numberOfDaysInRange: number;
-  today = new Date();
+  today: Date;
+  isCustomRange: boolean;
+  highlightCustom: boolean;
+  private startCustomRangeSelection: boolean;
+  private backupStartDate: Date;
+  private backupEndDate: Date;
 
   constructor() {
+    // set today to just the date - not the time
+    this.today = new Date((new Date()).toDateString());
+
     // initialize start and end date if not passed
     this.startDate = this.startDate || new Date();
     this.endDate = this.endDate || this.today;
@@ -50,6 +59,7 @@ export class DexCalComponent {
     this.selectedYear = this.today.getFullYear();
     const defaultRange = this.allOptions.ranges && this.allOptions.ranges.length > 0 ? this.allOptions.ranges[0].daysBackFromToday : 1;
     this.setRange(defaultRange);
+    this.setBackupDates();
     this.getWeeks();
   }
 
@@ -83,20 +93,17 @@ export class DexCalComponent {
   }
 
   setRange(days: number) {
+    this.isCustomRange = false;
     this.numberOfDaysInRange = days;
+    this.startDate = new Date((new Date()).toDateString());
     this.startDate.setDate(this.today.getDate() - days);
     this.endDate = this.today;
-    this.selected.emit({
-      startDate: this.startDate,
-      endDate: this.endDate
-    });
-    this.showCalendar = false;
-    this.setRangeText();
     this.getWeeks();
+    this.rangeSelected();
   }
 
   setCustomRange() {
-
+    this.isCustomRange = true;
   }
 
   toggleCalendar() {
@@ -105,6 +112,58 @@ export class DexCalComponent {
       this.getWeeks();
     }
   }
+
+  selectDate(day: Day) {
+    this.isCustomRange = true;
+    if (!this.startCustomRangeSelection) {
+      this.startCustomRangeSelection = true;
+      this.startDate = this.endDate = undefined;
+    }
+    if (!this.startDate) {
+      this.startDate = new Date(`${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`);
+      this.endDate = undefined;
+    } else if (!this.endDate) {
+      this.endDate = new Date(`${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`);
+      // the startDate should be before endDate
+      if (this.startDate > this.endDate) {
+        let temp = this.startDate;
+        this.startDate = this.endDate;
+        this.endDate = temp;
+      }
+      this.startCustomRangeSelection = false;
+    } else {
+      this.startDate = new Date(`${this.selectedMonth}/${day.date}/${this.selectedYear}`);
+      day.isSelected = true;
+    }
+    this.getWeeks();
+  }
+
+  areTheSameDate(d1: Date, d2: Date) {
+    if (d1 && d2) {
+      return !!(d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth()
+        && d1.getFullYear() === d2.getFullYear());
+    } else {
+      return false;
+    }
+  }
+
+  rangeSelected() {
+    this.showCalendar = false;
+    this.setRangeText();
+    this.setBackupDates();
+    this.selected.emit({
+      startDate: this.startDate,
+      endDate: this.endDate
+    });
+  }
+
+  cancel() {
+    this.showCalendar = false;
+    this.startDate = this.backupStartDate;
+    this.endDate = this.backupEndDate;
+    this.setRangeText();
+  }
+
   private setRangeText() {
     this.selectedRangeText = this.startDate && this.endDate ?
       this.selectedRangeText = `${this.formatDate(this.startDate)} - ${this.formatDate(this.endDate)}`
@@ -122,29 +181,53 @@ export class DexCalComponent {
       let daysOfWeek: Day[] = [];
       week.forEach((day: number) => {
         daysOfWeek.push({
-          date: day.toString(),
+          date: day,
           isSelected: this.isSameDate(this.startDate, day) || this.isSameDate(this.endDate, day),
           isInRange: this.isInRange(day)
         });
-      })
+      });
       this.weeks.push(daysOfWeek);
     });
+
+    this.highlightRange();
   }
 
   private isSameDate(expected: Date, actual: number): boolean {
+    if (!expected) {
+      return false;
+    }
+
     return !!(expected.getDate() === actual && expected.getMonth() === this.selectedMonth
       && expected.getFullYear() === this.selectedYear);
   }
 
   private isInRange(day: number): boolean {
-    return (this.startDate.getDate() < day && this.startDate.getMonth() <= this.selectedMonth
-      && this.startDate.getFullYear() <= this.selectedYear) && (this.endDate.getDate() > day &&
-        this.endDate.getMonth() >= this.selectedMonth && this.endDate.getFullYear() >= this.selectedYear);
-  }
-}
+    if (this.startDate && this.endDate && day > 0) {
+      let dateBeingChecked = new Date(`${this.selectedMonth + 1}/${day}/${this.selectedYear}`);
+      return this.startDate < dateBeingChecked && this.endDate > dateBeingChecked;
+    }
 
-export interface Day {
-  date: string;
-  isSelected: boolean;
-  isInRange: boolean;
+    return false;
+  }
+
+  private highlightRange() {
+    if (this.allOptions && this.allOptions.ranges && this.startDate && this.endDate) {
+      this.highlightCustom = false;
+      this.numberOfDaysInRange = Math.round(Math.abs((this.endDate.getTime() - this.startDate.getTime()) / (24 * 60 * 60 * 1000)));
+
+      // everything except Custom end at today
+      if (this.areTheSameDate(this.endDate, this.today)) {
+        if (!this.allOptions.ranges.some(r => r.daysBackFromToday === this.numberOfDaysInRange)) {
+          this.highlightCustom = true;
+        }
+      } else {
+        this.highlightCustom = true;
+      }
+    }
+  }
+
+  private setBackupDates() {
+    this.backupStartDate = new Date(this.startDate);
+    this.backupEndDate = new Date(this.endDate);
+  }
 }

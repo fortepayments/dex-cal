@@ -13,3 +13,9 @@ export interface DexSelectedRange {
   startDate: Date;
   endDate: Date;
 }
+
+export interface Day {
+  date: number;
+  isSelected?: boolean;
+  isInRange?: boolean;
+}

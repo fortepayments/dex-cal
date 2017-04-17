@@ -8,8 +8,9 @@
             Thursday <br> April 13th
         </p>
         <ul>
-            <li *ngFor="let range of allOptions.ranges" (click)="setRange(range.daysBackFromToday)" [ngClass]="{'selected-range': (numberOfDaysInRange === range.daysBackFromToday) && (endDate === today)}"><a>{{range.label}}</a></li>
-            <li (click)="setCustomRange()"><a>Custom</a></li>
+            <li *ngFor="let range of allOptions.ranges" (click)="setRange(range.daysBackFromToday)" 
+                [ngClass]="{'selected-range': (numberOfDaysInRange === range.daysBackFromToday) && areTheSameDate(endDate, today)}"><a>{{range.label}}</a></li>
+            <li (click)="setCustomRange()" [ngClass]="{'selected-range': highlightCustom}"><a>Custom</a></li>
         </ul>
     </div>
     <div class="calendar">
@@ -32,8 +33,12 @@
             </ul>
 
             <ul class="weeks" *ngFor="let week of weeks">
-                <li class="days" *ngFor="let day of week" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}"><a>{{day.date > 0 ? day.date: ''}}</a></li>
+                <li class="days" *ngFor="let day of week; let i=index"
+                    [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}"
+                    (click)="selectDate(day)"><a>{{day.date > 0 ? day.date: ''}}</a></li>
             </ul>
         </div>
     </div>
+    <button [disabled]="!isCustomRange" (click)="rangeSelected()">Apply</button>
+    <button [disabled]="!isCustomRange" (click)="cancel()">Cancel</button>
 </div>
