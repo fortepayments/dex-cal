@@ -1,6 +1,7 @@
 .calendar-container {
     height: 397px;
     display: flex;
+    position: absolute;
     flex-direction: row;
     background-color: #fff;
     color: #a3a3a3;
@@ -17,7 +18,7 @@
     color: inherit;
     padding: 0 40px;
     padding-bottom: 40px;
-    line-height: 3;
+    line-height: 2.8;
     border-right: 1px solid rgba(211, 211, 211, 0.52);
 }
 
@@ -35,6 +36,8 @@ p.selected.date {
     line-height: 1.2;
     font-size: 3.2rem;
     letter-spacing: 2px;
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
     text-transform: uppercase;
     color: lightgray;
 }
@@ -72,8 +75,9 @@ p.selected.date {
 .weeks {
     display: grid;
     /*grid-template: repeat(7, 55px);*/
-    grid-template-columns: repeat(7, 55px);
-    grid-gap: 10px;
+    grid-template-columns: repeat(7, 50px);
+    grid-gap: 16px;
+    overflow: hidden;
 }
 
 .weeks-container {
@@ -87,18 +91,14 @@ p.selected.date {
 }
 
 .days {
-    height: 24px;
+    position: relative;
     text-align: center;
-    margin: auto auto;
     font-size: 1.2rem;
-    border-radius: 50%;
     margin: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.55);
     cursor: pointer;
+    z-index: 2;
 }
 
 .days :hover {
@@ -109,15 +109,37 @@ p.selected.date {
 .selected-date {
     background-color: #148eff;
     color: white;
+    box-shadow: 2px 3px 8px rgba(53, 72, 90, 0.34);
     padding: 0.5rem;
-    border-radius: 10%;
+    border-radius: 50%;
 }
 
 .date-in-range {
-    background-color: lightblue;
+    position: relative;
     color: white;
     padding: 0.5rem;
-    border-radius: 10%;   
+    border-radius: 10%;
+    z-index: 1;
+    background: #7BE0AD;
+    display: flex;
+    align-items: center;
+}
+
+.days.date-in-range:before {
+    content: "";
+    position: absolute;
+    background: #7BE0AD;
+    border-radius: 3px;
+    z-index: -9;
+    left: -132%;
+    width: 44px;
+    height: 100%;
+}
+
+.weeks>.days.date-in-range:nth-child(2):before {
+    content: "";
+    left: -180%;
+    width: 75px;
 }
 
 .selected-range {
