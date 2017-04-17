@@ -1,7 +1,7 @@
-import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 
 import { Calendar, MONTHS } from './calendar';
+import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
 
 @Component({
   moduleId: module.id,
@@ -9,7 +9,7 @@ import { Calendar, MONTHS } from './calendar';
   templateUrl: './dex-cal.component.html',
   styleUrls: ['./dex-cal.component.css']
 })
-export class DexCalComponent {
+export class DexCalComponent implements OnInit {
 
   @Input() options: DexCalOptions;
   @Output() selected = new EventEmitter<DexSelectedRange>();
@@ -24,8 +24,7 @@ export class DexCalComponent {
       { label: 'Last 30 days', daysBackFromToday: 30 },
       { label: 'Last 60 days', daysBackFromToday: 60 },
       { label: 'Last 90 days', daysBackFromToday: 90 }
-    ],
-    allowCustomDates: true
+    ]
   };
 
   cal: Calendar;
@@ -50,10 +49,16 @@ export class DexCalComponent {
     // initialize start and end date if not passed
     this.startDate = this.startDate || new Date();
     this.endDate = this.endDate || this.today;
+  }
 
+  ngOnInit() {
     // merge the options
-    this.allOptions = this.options ? Object.assign(this.allOptions, this.options, this.defaultOptions) : this.defaultOptions;
-
+    if (this.options) {
+      this.allOptions.label = this.options.label || this.defaultOptions.label;
+      this.allOptions.ranges = this.options.ranges || this.defaultOptions.ranges;
+    } else {
+      this.allOptions = this.defaultOptions;
+    }
     this.cal = new Calendar();
     this.selectedMonth = this.today.getMonth();
     this.selectedYear = this.today.getFullYear();

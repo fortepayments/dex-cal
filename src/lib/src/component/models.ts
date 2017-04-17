@@ -1,7 +1,6 @@
 export interface DexCalOptions {
   label?: string;
   ranges?: DexCalRange[];
-  allowCustomDates?: boolean;
 }
 
 export interface DexCalRange {
