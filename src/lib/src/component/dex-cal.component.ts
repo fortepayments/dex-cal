@@ -12,6 +12,7 @@ import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
 export class DexCalComponent implements OnInit {
 
   @Input() options: DexCalOptions;
+  @Input() disabled: boolean;
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
   @Input() endDate: Date;
@@ -114,9 +115,11 @@ export class DexCalComponent implements OnInit {
   }
 
   toggleCalendar() {
-    this.showCalendar = !this.showCalendar;
-    if (this.showCalendar) {
-      this.getWeeks();
+    if (!this.disabled) {
+      this.showCalendar = !this.showCalendar;
+      if (this.showCalendar) {
+        this.getWeeks();
+      }
     }
   }
 
