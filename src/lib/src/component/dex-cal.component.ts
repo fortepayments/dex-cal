@@ -49,9 +49,13 @@ export class DexCalComponent implements OnInit {
     // initialize start and end date if not passed
     this.startDate = this.startDate || new Date();
     this.endDate = this.endDate || this.today;
+    this.cal = new Calendar();
+    this.selectedMonth = this.today.getMonth();
+    this.selectedYear = this.today.getFullYear();
   }
 
   ngOnInit() {
+
     // merge the options
     if (this.options) {
       this.allOptions.label = this.options.label || this.defaultOptions.label;
@@ -59,13 +63,11 @@ export class DexCalComponent implements OnInit {
     } else {
       this.allOptions = this.defaultOptions;
     }
-    this.cal = new Calendar();
-    this.selectedMonth = this.today.getMonth();
-    this.selectedYear = this.today.getFullYear();
+
     const defaultRange = this.allOptions.ranges && this.allOptions.ranges.length > 0 ? this.allOptions.ranges[0].daysBackFromToday : 1;
     this.setRange(defaultRange);
     this.setBackupDates();
-    this.getWeeks();
+    // this.getWeeks();
   }
 
   previousMonth() {
@@ -181,20 +183,22 @@ export class DexCalComponent implements OnInit {
 
   private getWeeks() {
     this.weeks = [];
-    let daysInMonth = this.cal.monthDays(this.selectedYear, this.selectedMonth);
-    daysInMonth.forEach((week: number[]) => {
-      let daysOfWeek: Day[] = [];
-      week.forEach((day: number) => {
-        daysOfWeek.push({
-          date: day,
-          isSelected: this.isSameDate(this.startDate, day) || this.isSameDate(this.endDate, day),
-          isInRange: this.isInRange(day)
+    if (this.selectedYear && this.selectedMonth) {
+      let daysInMonth = this.cal.monthDays(this.selectedYear, this.selectedMonth);
+      daysInMonth.forEach((week: number[]) => {
+        let daysOfWeek: Day[] = [];
+        week.forEach((day: number) => {
+          daysOfWeek.push({
+            date: day,
+            isSelected: this.isSameDate(this.startDate, day) || this.isSameDate(this.endDate, day),
+            isInRange: this.isInRange(day)
+          });
         });
+        this.weeks.push(daysOfWeek);
       });
-      this.weeks.push(daysOfWeek);
-    });
 
-    this.highlightRange();
+      this.highlightRange();
+    }
   }
 
   private isSameDate(expected: Date, actual: number): boolean {

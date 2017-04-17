@@ -90,6 +90,7 @@ describe('dex-cal component', function () {
   });
 
   it('should have a default range of yesterday set', () => {
+    fixture.detectChanges();
     expect(comp.startDate).toBeTheSameDate(yesterday);
   });
 
