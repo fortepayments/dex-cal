@@ -204,7 +204,7 @@ export class DexCalComponent {
   private isInRange(day: number): boolean {
     if (this.startDate && this.endDate && day > 0) {
       let dateBeingChecked = new Date(`${this.selectedMonth + 1}/${day}/${this.selectedYear}`);
-      return this.startDate < dateBeingChecked && this.endDate > dateBeingChecked;
+      return this.startDate <= dateBeingChecked && this.endDate >= dateBeingChecked;
     }
 
     return false;
