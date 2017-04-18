@@ -12,12 +12,15 @@ body {
     height: 100%;
     width: 100%;
     color: #a3a3a3;
-    letter-spacing: 0.04rem;
+    letter-spacing: 0.1rem;
     font-weight: 300;
     font-size: 1.4rem;
     font-family: 'Roboto', sans-serif;
     /*background: #f2f2f2;*/
-    background: #ffbf86;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 h1 {
@@ -36,6 +39,15 @@ h2 {
     margin-bottom: 0;
     text-transform: uppercase;
     letter-spacing: 1rem;
+}
+
+h4 {
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
+a {
+    cursor: pointer;
 }
 
 p {
