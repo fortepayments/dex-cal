@@ -11,13 +11,15 @@ body {
     line-height: 1.6;
     height: 100%;
     width: 100%;
-    color: #a3a3a3;
-    letter-spacing: 0.04rem;
+    color: #424242;
+    letter-spacing: 0.1rem;
     font-weight: 300;
     font-size: 1.4rem;
     font-family: 'Roboto', sans-serif;
-    /*background: #f2f2f2;*/
-    background: #ffbf86;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 h1 {
@@ -31,15 +33,23 @@ h1 {
 
 h2 {
     font-weight: 300;
-    /* font-size: 36px; */
-    color: white;
+    color: initial;
     margin-bottom: 0;
     text-transform: uppercase;
     letter-spacing: 1rem;
 }
 
+h4 {
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
+a {
+    cursor: pointer;
+}
+
 p {
-    color: white;
+    color: initial;
     margin-top: 0;
     margin-bottom: 3rem;
 }
@@ -86,36 +96,6 @@ section {
     grid-area: footer;
     background-color: #F2EFEA;
 }*/
-
-.toggle {
-    width: 320px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    font: inherit;
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
-    border: 0;
-    border-radius: 3px;
-    outline: 0;
-    margin-bottom: 1rem;
-}
-
-.toggle>svg {
-    padding-right: 1rem;
-    padding: 12px 12px;
-    background-color: #148eff;
-    border-radius: 3px 0 0 3px;
-}
-
-.toggle>span:nth-child(2) {
-    padding: 12px 12px;
-    flex: 1;
-}
-
-.toggle>span {
-    padding: 12px 12px
-}
 
 ul {
     list-style-type: none;
