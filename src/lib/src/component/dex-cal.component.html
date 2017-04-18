@@ -1,5 +1,6 @@
 <div class="toggle" (click)="toggleCalendar()">
-    <span><b>{{allOptions.label}}:</b> {{selectedRangeText}}</span><span>▾</span>
+    <span>{{allOptions.label}}: {{selectedRangeText}}</span>
+    <span>▾</span>
 </div>
 
 <div class="calendar-container" *ngIf="showCalendar">
