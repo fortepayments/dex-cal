@@ -99,36 +99,6 @@ section {
     background-color: #F2EFEA;
 }*/
 
-.toggle {
-    width: 320px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    font: inherit;
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
-    border: 0;
-    border-radius: 3px;
-    outline: 0;
-    margin-bottom: 1rem;
-}
-
-.toggle>svg {
-    padding-right: 1rem;
-    padding: 12px 12px;
-    background-color: #148eff;
-    border-radius: 3px 0 0 3px;
-}
-
-.toggle>span:nth-child(2) {
-    padding: 12px 12px;
-    flex: 1;
-}
-
-.toggle>span {
-    padding: 12px 12px
-}
-
 ul {
     list-style-type: none;
     margin: 0;
