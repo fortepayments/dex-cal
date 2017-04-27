@@ -17,15 +17,22 @@
     margin-right: 0.79107rem;
 }
 
-.toggle>span:nth-child(2) {
-    flex: 1;
-}
-
 .toggle>span:first-child {
     padding: 0.4rem 1rem;
     margin-right: 1rem;
     border-right: 1px solid rgba(211, 211, 211, 0.57);
     font-weight: 500;
+}
+
+.toggle>span:nth-child(2) {
+    padding: 0.5rem 1rem;
+    font-size: inherit;
+    flex: 1;
+}
+
+.toggle>span {
+    padding: 0 1rem;
+    font-size: 1.2rem;
 }
 
 .calendar-container {
@@ -34,10 +41,11 @@
     position: absolute;
     flex-direction: row;
     background-color: #fff;
-    color: #a3a3a3;
     font-size: 1rem;
+    font-weight: 300;
     border-radius: 3px;
     box-shadow: 1px 2px 10px rgba(0, 0, 0, .2);
+    user-select: none;
     overflow: hidden;
     animation-fill-mode: both;
     animation: slideIn-up 300ms cubic-bezier(.39, 0, .38, 1);
@@ -48,6 +56,8 @@
     min-width: 160px;
     padding: 0rem 2.4rem 3.6rem;
     line-height: 2.8;
+    background-color: #0d8bff;
+    color: #fff;
     border-right: 1px solid rgba(211, 211, 211, 0.52);
 }
 
@@ -57,24 +67,24 @@
 
 .options ul>li>a {
     margin-left: 1rem;
+    transition: color 0.3s ease;
+    text-decoration: none;
 }
 
 .options ul>li>a:hover {
-    color: #0d8bff;
-    border-bottom: 2px solid currentColor;
-    transition: color 0.3s ease;
+    font-weight: bold;
 }
 
 .options ul>li.selected-range {
-    color: #0d8bff;
+    font-weight: bold;
 }
 
 .options ul>li.selected-range:before {
     content: "";
     display: block;
-    width: 4px;
-    height: 4px;
-    background-color: #0d8bff;
+    width: 5px;
+    height: 5px;
+    background-color: #FFEB3B;
     border-radius: 50%;
     top: 40%;
     position: absolute;
@@ -149,7 +159,7 @@
 
 .calendar-controls {
     display: flex;
-    color: initial;
+    /*color: initial;*/
     border-bottom: 1px solid rgba(211, 211, 211, 0.52);
     margin-bottom: 1rem;
 }
@@ -180,6 +190,11 @@
     border-radius: 50%;
     width: 24px;
     height: 24px;
+    transition: all 0.3s ease;
+}
+
+.calendar-controls button:hover {
+    background: rgba(211, 211, 211, 0.50);
     transition: all 0.3s ease;
 }
 
@@ -215,6 +230,34 @@
 
 .weekdays li {
     text-align: center;
+    position: relative;
+}
+
+.weekdays li:not(.selected-weekday):after {
+    content: "";
+    height: 0px;
+    width: 0px;
+    border-radius: 50%;
+    background: #FFC107;
+    position: absolute;
+    left: 0;
+    transform-origin: center;
+    transform: translateX(15px);
+    bottom: -4px;
+    transition: all 0.3s ease;
+}
+
+.selected-weekday:after {
+    content: "";
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background: #FFC107;
+    position: absolute;
+    left: 0;
+    transform: translateX(15px);
+    bottom: -6px;
+    transition: all 0.3s ease;
 }
 
 .days {
@@ -236,9 +279,22 @@
     letter-spacing: normal;
 }
 
+.days:empty {
+    pointer-events: none;
+}
+
 .days:not(.date-in-range):not(.selected-date):hover {
     color: #0d8bff;
     font-weight: bold;
+    background: rgba(211, 211, 211, 0.50);
+    transition: all 0.3s ease;
+}
+
+.days:not(.date-in-range):not(.selected-date):active {
+    color: #fff;
+    font-weight: bold;
+    background: rgba(13, 139, 255, 0.50);
+    transition: all 0.3s ease;
 }
 
 .selected-date {
@@ -341,7 +397,6 @@ footer button.cancel {
     .options.active {
         display: block;
         position: absolute;
-        background: white;
         height: 80%;
         bottom: 0;
         width: 100%;
@@ -355,6 +410,7 @@ footer button.cancel {
         position: absolute;
         right: 0;
         margin: 2rem;
+        fill: #fff;
         background: transparent;
         border: 0;
         outline: 0;
@@ -378,6 +434,8 @@ footer button.cancel {
     animation: slideIn-up 300ms cubic-bezier(.39, 0, .38, 1) both;
 }
 
+.hide-options,
+.options ul>li.selected-range:before,
 .selected-date {
     animation-iteration-count: 1;
     animation: scale-in--selected 450ms cubic-bezier(0.64, 0.81, 0.64, 0.82) forwards;
@@ -388,6 +446,14 @@ footer button.cancel {
 .days.selected-date.date-in-range+.days.date-in-range:not(.selected-date):before {
     animation: fade-in--range 400ms cubic-bezier(0.37, 0.62, 0.76, 1.14) forwards;
 }
+
+
+/*.date-in-range:not(.selected-date),
+.days.date-in-range:not(.selected-date):after,
+.days.selected-date.date-in-range+.days.date-in-range:not(.selected-date):before {
+    animation-fill-mode: forwards;
+    animation: slide-up--range 300ms cubic-bezier(0.37, 0.62, 0.76, 1.14);
+}*/
 
 @keyframes slideIn-up {
     0% {

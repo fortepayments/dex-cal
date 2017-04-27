@@ -8,7 +8,7 @@ import { DexCalOptions } from 'dex-cal';
     <header>
       <div>
         <h1>Dex-Cal</h1>
-        <p>An Angular Calendar component with predefined ranges</p>
+        <p style="color: white">An Angular Calendar component with predefined ranges</p>
       </div>
       <div>
         <span>Github: </span>
@@ -19,7 +19,7 @@ import { DexCalOptions } from 'dex-cal';
     </header>
     <section>
     <h2>Basic Control</h2>
-      <p>Click anywhere on the placeholder below to show the calendar.</p>
+    <br/>
       <dex-cal [options]="calendarOptions"></dex-cal>
     </section>
   </div>

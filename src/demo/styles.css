@@ -11,12 +11,11 @@ body {
     line-height: 1.6;
     height: 100%;
     width: 100%;
-    color: #a3a3a3;
+    color: #424242;
     letter-spacing: 0.1rem;
     font-weight: 300;
     font-size: 1.4rem;
     font-family: 'Roboto', sans-serif;
-    /*background: #f2f2f2;*/
 }
 
 * {
@@ -34,8 +33,7 @@ h1 {
 
 h2 {
     font-weight: 300;
-    /* font-size: 36px; */
-    color: white;
+    color: initial;
     margin-bottom: 0;
     text-transform: uppercase;
     letter-spacing: 1rem;
@@ -51,7 +49,7 @@ a {
 }
 
 p {
-    color: white;
+    color: initial;
     margin-top: 0;
     margin-bottom: 3rem;
 }

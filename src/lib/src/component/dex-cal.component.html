@@ -7,7 +7,7 @@
 
 <div class="calendar-container" *ngIf="showCalendar">
     <div [class.active]="showOptions" class="options">
-        <button *ngIf="showOptions" (click)="showOptions = false" class="hide-options"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
+        <button *ngIf="showOptions" (click)="showOptions = false" class="hide-options"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
             <path d="M0 0h24v24H0z" fill="none"/>
         </svg>
@@ -69,13 +69,13 @@
         </div>
         <div class="weeks-container">
             <ul class="weekdays">
-                <li>SUN</li>
-                <li>MON</li>
-                <li>TUE</li>
-                <li>WED</li>
-                <li>THU</li>
-                <li>FRI</li>
-                <li>SAT</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sun' || (endDate | date:'EEE') === 'Sun'}">SUN</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Mon' || (endDate | date:'EEE') === 'Mon'}">MON</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Tue' || (endDate | date:'EEE') === 'Tue'}">TUE</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Wed' || (endDate | date:'EEE') === 'Wed'}">WED</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Thu' || (endDate | date:'EEE') === 'Thu'}">THU</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Fri' || (endDate | date:'EEE') === 'Fri'}">FRI</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sat' || (endDate | date:'EEE') === 'Sat'}">SAT</li>
             </ul>
 
             <ul class="weeks" *ngFor="let week of weeks">
