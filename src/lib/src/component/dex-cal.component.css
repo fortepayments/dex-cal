@@ -217,6 +217,36 @@
     flex: 1;
 }
 
+
+/*// fallback to flexbox for older browsers*/
+
+@supports not (display: grid) {
+    .weekdays,
+    .weeks {
+        display: flex;
+        flex-direction: row;
+        height: 3.6rem;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .days {
+        color: rgba(0, 0, 0, 0.55);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* add width / height */
+        height: 26px;
+        width: 26px;
+        margin: 0.5rem;
+        border-radius: 50%;
+        letter-spacing: 0px;
+        cursor: pointer;
+        z-index: 2;
+        transition: all 0.2s ease;
+    }
+}
+
 .weekdays,
 .weeks {
     display: grid;
