@@ -35,6 +35,7 @@ export class DexCalComponent implements OnInit {
   selectedYear: number;
   selectedRangeText: string;
   showCalendar = false;
+  showOptions = false;
   numberOfDaysInRange: number;
   today: Date;
   isCustomRange: boolean;
@@ -176,9 +177,10 @@ export class DexCalComponent implements OnInit {
 
   private setRangeText() {
     this.selectedRangeText = this.startDate && this.endDate ?
-      this.selectedRangeText = `${this.formatDate(this.startDate)} - ${this.formatDate(this.endDate)}`
+      this.selectedRangeText = `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
       : 'Select date range';
   }
+  // ⇢
 
   private formatDate(date: Date) {
     return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;

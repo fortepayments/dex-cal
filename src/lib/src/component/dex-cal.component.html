@@ -1,10 +1,17 @@
 <div class="toggle" (click)="toggleCalendar()">
-    <span>{{allOptions.label}}: {{selectedRangeText}}</span>
-    <span>▾</span>
+    <span>{{allOptions.label}}:</span> <span>{{selectedRangeText}}</span>
+    <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/><path d="M0-.75h24v24H0z" fill="none"/>
+    </svg>
 </div>
 
 <div class="calendar-container" *ngIf="showCalendar">
-    <div class="options">
+    <div [class.active]="showOptions" class="options">
+        <button *ngIf="showOptions" (click)="showOptions = false" class="hide-options"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            <path d="M0 0h24v24H0z" fill="none"/>
+        </svg>
+        </button>
         <h4>Range options</h4>
         <ul>
             <li *ngFor="let range of allOptions.ranges" (click)="setRange(range.daysBackFromToday)" [ngClass]="{'selected-range': (numberOfDaysInRange === range.daysBackFromToday) && areTheSameDate(endDate, today)}"><a>{{range.label}}</a></li>
@@ -12,35 +19,75 @@
         </ul>
     </div>
     <div class="calendar">
-
-        <div class="calendar-controls">
-            <div>
-                <button class="arrow" (click)="previousMonth()">◀</button> {{months[selectedMonth]}}
-                <button class="arrow" (click)="nextMonth()">▶</button>
+        <div class="current">
+            <div class="current-date-selected">
+                <span>{{startDate | date:'dd'}}</span>
+                <div>
+                    <span>{{startDate | date:'EEE'}}</span>
+                    <span>{{startDate | date:'MMM'}}</span>
+                </div>
+                <span>{{startDate | date:'yy'}}</span>
             </div>
-            <div>
-                <button class="arrow" (click)="previousYear()">◀</button> {{selectedYear}}
-                <button class="arrow" (click)="nextYear()">▶</button>
+            <div *ngIf="endDate" class="current-date-selected end-date">
+                <span>{{endDate | date:'dd'}}</span>
+                <div>
+                    <span>{{endDate | date:'EEE'}}</span>
+                    <span>{{endDate | date:'MMM'}}</span>
+                </div>
+                <span>{{endDate | date:'yy'}}</span>
+            </div>
+        </div>
+        <div class="calendar-controls">
+            <div class="month-select">
+                <button class="arrow" (click)="previousMonth()"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0d8bff" height="18" viewBox="0 0 24 24" width="18">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </button> <span class="selected-month">{{months[selectedMonth]}}</span>
+                <button class="arrow" (click)="nextMonth()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0d8bff" height="18" viewBox="0 0 24 24" width="18">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="year-select">
+                <button class="arrow" (click)="previousYear()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0d8bff" height="18" viewBox="0 0 24 24" width="18">
+                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </button> <span class="selected-year">{{selectedYear}}</span>
+                <button class="arrow" (click)="nextYear()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0d8bff" height="18" viewBox="0 0 24 24" width="18">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </button>
             </div>
         </div>
         <div class="weeks-container">
             <ul class="weekdays">
-                <li>Sun</li>
-                <li>Mon</li>
-                <li>Tue</li>
-                <li>Wed</li>
-                <li>Thur</li>
-                <li>Fri</li>
-                <li>Sat</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sun' || (endDate | date:'EEE') === 'Sun'}">SUN</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Mon' || (endDate | date:'EEE') === 'Mon'}">MON</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Tue' || (endDate | date:'EEE') === 'Tue'}">TUE</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Wed' || (endDate | date:'EEE') === 'Wed'}">WED</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Thu' || (endDate | date:'EEE') === 'Thu'}">THU</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Fri' || (endDate | date:'EEE') === 'Fri'}">FRI</li>
+                <li [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sat' || (endDate | date:'EEE') === 'Sat'}">SAT</li>
             </ul>
 
             <ul class="weeks" *ngFor="let week of weeks">
-                <li class="days" *ngFor="let day of week; let i=index" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}" (click)="selectDate(day)"><a>{{day.date > 0 ? day.date: ''}}</a></li>
+                <li class="days" *ngFor="let day of week; let i=index" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}" (click)="selectDate(day)">{{day.date > 0 ? day.date: ''}}</li>
             </ul>
         </div>
         <footer>
-            <button [disabled]="!isCustomRange" (click)="rangeSelected()">Apply</button>
-            <button class="cancel" [disabled]="!isCustomRange" (click)="cancel()">Cancel</button>
+            <button class="show-options" (click)="showOptions = true">Options</button>
+            <div>
+                <button [disabled]="!isCustomRange" (click)="rangeSelected()">Apply</button>
+                <button class="cancel" [disabled]="!isCustomRange" (click)="cancel()">Cancel</button>
+            </div>
         </footer>
     </div>
 </div>
