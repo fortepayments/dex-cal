@@ -179,7 +179,6 @@ export class DexCalComponent implements OnInit {
       this.selectedRangeText = `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
       : 'Select date range';
   }
-  // ⇢
 
   private formatDate(date: Date) {
     return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;
