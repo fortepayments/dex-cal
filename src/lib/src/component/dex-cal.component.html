@@ -85,7 +85,7 @@
         <footer>
             <button class="show-options" (click)="showOptions = true">Options</button>
             <div>
-                <button [disabled]="!isCustomRange" (click)="rangeSelected()">Apply</button>
+                <button [disabled]="!isCustomRange || !startDate || !endDate" (click)="rangeSelected()">Apply</button>
                 <button class="cancel" [disabled]="!isCustomRange" (click)="cancel()">Cancel</button>
             </div>
         </footer>
