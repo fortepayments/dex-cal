@@ -69,7 +69,6 @@ export class DexCalComponent implements OnInit {
     const defaultRange = this.allOptions.ranges && this.allOptions.ranges.length > 0 ? this.allOptions.ranges[0].daysBackFromToday : 1;
     this.setRange(defaultRange);
     this.setBackupDates();
-    // this.getWeeks();
   }
 
   previousMonth() {
@@ -188,7 +187,7 @@ export class DexCalComponent implements OnInit {
 
   private getWeeks() {
     this.weeks = [];
-    if (this.selectedYear && this.selectedMonth) {
+    if (this.selectedYear !== undefined && this.selectedMonth !== undefined) {
       let daysInMonth = this.cal.monthDays(this.selectedYear, this.selectedMonth);
       daysInMonth.forEach((week: number[]) => {
         let daysOfWeek: Day[] = [];
