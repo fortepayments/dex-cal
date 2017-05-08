@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, EventEmitter, Output, OnInit, HostListener } from '@angular/core';
 
 import { Calendar, MONTHS } from './calendar';
 import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
@@ -7,10 +7,7 @@ import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
   moduleId: module.id,
   selector: 'dex-cal',
   templateUrl: './dex-cal.component.html',
-  styleUrls: ['./dex-cal.component.css'],
-  host: {
-    '(document:click)': 'onClickOutside($event)',
-  },
+  styleUrls: ['./dex-cal.component.css']
 })
 export class DexCalComponent implements OnInit {
   @Input() options: DexCalOptions;
@@ -177,8 +174,10 @@ export class DexCalComponent implements OnInit {
     this.setRangeText();
   }
 
-  onClickOutside() {
-    if (!this.elemRef.nativeElement.contains(event.target)) {
+  @HostListener('document:click', ['$event.path'])
+  onClickOutside(targetElementPath: Array<any>) {
+    let elementRefInPath = targetElementPath.find(e => e === this.elemRef.nativeElement);
+    if (!elementRefInPath) {
       this.cancel();
     }
   }
