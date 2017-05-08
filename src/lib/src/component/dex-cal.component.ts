@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, ElementRef, EventEmitter, Output, OnInit } from '@angular/core';
 
 import { Calendar, MONTHS } from './calendar';
 import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
@@ -7,7 +7,10 @@ import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
   moduleId: module.id,
   selector: 'dex-cal',
   templateUrl: './dex-cal.component.html',
-  styleUrls: ['./dex-cal.component.css']
+  styleUrls: ['./dex-cal.component.css'],
+  host: {
+    '(document:click)': 'onClickOutside($event)',
+  },
 })
 export class DexCalComponent implements OnInit {
   @Input() options: DexCalOptions;
@@ -15,8 +18,8 @@ export class DexCalComponent implements OnInit {
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
   @Input() endDate: Date;
-  @Input() openCalendar = false;
 
+  openCalendar = false;
   allOptions: DexCalOptions = {};
   defaultOptions: DexCalOptions = {
     label: 'Label',
@@ -44,7 +47,7 @@ export class DexCalComponent implements OnInit {
   private backupStartDate: Date;
   private backupEndDate: Date;
 
-  constructor() {
+  constructor(private elemRef: ElementRef) {
     // set today to just the date - not the time
     this.today = new Date((new Date()).toDateString());
 
@@ -172,6 +175,12 @@ export class DexCalComponent implements OnInit {
     this.startDate = this.backupStartDate;
     this.endDate = this.backupEndDate;
     this.setRangeText();
+  }
+
+  onClickOutside() {
+    if (!this.elemRef.nativeElement.contains(event.target)) {
+      this.cancel();
+    }
   }
 
   private setRangeText() {
