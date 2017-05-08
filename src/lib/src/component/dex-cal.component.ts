@@ -10,12 +10,13 @@ import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
   styleUrls: ['./dex-cal.component.css']
 })
 export class DexCalComponent implements OnInit {
-
   @Input() options: DexCalOptions;
   @Input() disabled: boolean;
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
   @Input() endDate: Date;
+  @Input() openCalendar = false;
+
   allOptions: DexCalOptions = {};
   defaultOptions: DexCalOptions = {
     label: 'Label',
@@ -34,7 +35,6 @@ export class DexCalComponent implements OnInit {
   selectedMonth: number;
   selectedYear: number;
   selectedRangeText: string;
-  showCalendar = false;
   showOptions = false;
   numberOfDaysInRange: number;
   today: Date;
@@ -116,8 +116,8 @@ export class DexCalComponent implements OnInit {
 
   toggleCalendar() {
     if (!this.disabled) {
-      this.showCalendar = !this.showCalendar;
-      if (this.showCalendar) {
+      this.openCalendar = !this.openCalendar;
+      if (this.openCalendar) {
         this.getWeeks();
       }
     }
@@ -158,7 +158,7 @@ export class DexCalComponent implements OnInit {
   }
 
   rangeSelected() {
-    this.showCalendar = false;
+    this.openCalendar = false;
     this.setRangeText();
     this.setBackupDates();
     this.selected.emit({
@@ -168,7 +168,7 @@ export class DexCalComponent implements OnInit {
   }
 
   cancel() {
-    this.showCalendar = false;
+    this.openCalendar = false;
     this.startDate = this.backupStartDate;
     this.endDate = this.backupEndDate;
     this.setRangeText();
