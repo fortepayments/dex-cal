@@ -169,6 +169,7 @@ export class DexCalComponent implements OnInit {
 
   cancel() {
     this.openCalendar = false;
+    this.isCustomRange = false;
     this.startDate = this.backupStartDate;
     this.endDate = this.backupEndDate;
     this.setRangeText();
