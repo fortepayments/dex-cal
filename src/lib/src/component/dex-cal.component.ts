@@ -43,6 +43,8 @@ export class DexCalComponent implements OnInit {
   private startCustomRangeSelection: boolean;
   private backupStartDate: Date;
   private backupEndDate: Date;
+  private backupSelectedYear: number;
+  private backupSelectedMonth: number;
 
   constructor(private elemRef: ElementRef) {
     // set today to just the date - not the time
@@ -170,8 +172,16 @@ export class DexCalComponent implements OnInit {
   cancel() {
     this.openCalendar = false;
     this.isCustomRange = false;
+    this.startCustomRangeSelection = false;
     this.startDate = this.backupStartDate;
     this.endDate = this.backupEndDate;
+    if (this.backupSelectedMonth) {
+      this.selectedMonth = this.backupSelectedMonth;
+    }
+    if (this.backupSelectedYear) {
+      this.selectedYear = this.backupSelectedYear;
+    }
+
     this.setRangeText();
   }
 
@@ -250,5 +260,7 @@ export class DexCalComponent implements OnInit {
   private setBackupDates() {
     this.backupStartDate = new Date(this.startDate);
     this.backupEndDate = new Date(this.endDate);
+    this.backupSelectedYear = this.selectedYear;
+    this.backupSelectedMonth = this.selectedMonth;
   }
 }
