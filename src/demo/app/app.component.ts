@@ -23,19 +23,30 @@ import { DexCalOptions } from 'dex-cal';
     <div>
     Default Settings: 
       <dex-cal [options]="calendarOptions"></dex-cal>
+      Template
       <code>&lt;dex-cal [options]="calendarOptions"&gt;&lt;/dex-cal&gt;</code>
+      Code
+      <pre>calendarOptions: DexCalOptions = {{calendarOptions | json}}</pre>
     </div>
     <div>
     Default Settings: 
       <dex-cal [options]="calendarOptionsWithDefaultRange"></dex-cal>
-      <code>&lt;dex-cal [options]="calendarOptions"&gt;&lt;/dex-cal&gt;</code>
-     
+      Template
+      <code>&lt;dex-cal [options]="calendarOptionsWithDefaultRange"&gt;&lt;/dex-cal&gt;</code>
+      Code
+      <pre>calendarOptionsWithDefaultRange: DexCalOptions = {{calendarOptionsWithDefaultRange | json}}</pre>
     </div>
     <div>
     Custom Start and End Date: 
       <dex-cal [options]="calendarOptions" [startDate]="startDate" [endDate]="endDate"></dex-cal>
+      Template
       <code>&lt;dex-cal [options]="calendarOptions"&gt;&lt;/dex-cal&gt;</code>
-      
+      Code
+      <pre>
+  this.endDate = new Date();
+  this.startDate = new Date();
+  this.startDate.setDate(this.startDate.getDate() - 7);
+      </pre>
     </div>
     </section>
   </div>
