@@ -1,6 +1,6 @@
 {
   "name": "dex-cal",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Datepicker with ranges",
   "main": "./dex-cal.umd.js",
   "module": "./dex-cal.es5.js",
