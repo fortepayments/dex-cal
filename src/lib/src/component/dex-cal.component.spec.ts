@@ -2,11 +2,11 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { DebugElement, Component } from '@angular/core';
 
-import { DexCalComponent} from './dex-cal.component';
+import { DexCalComponent } from './dex-cal.component';
 import { customDateMatchers } from './jasmine-custom-matchers';
-import { DexSelectedRange } from './models';
+import { DexSelectedRange, DexCalOptions } from './models';
 
 describe('dex-cal component', function () {
   let de: DebugElement;
@@ -101,10 +101,10 @@ describe('dex-cal component', function () {
     expect(comp.startDate).toBeTheSameDate(aWeekAgo);
   });
 
-  it('should set the enddate today if a predefined range is chosen', () => {
+  it('should set the enddate to today if a predefined range is chosen', () => {
+    fixture.detectChanges();
     expect(comp.endDate).toBeTheSameDate(today);
   });
-
 
   it('should fire a selected event when a range is selected', () => {
     comp.selected.subscribe((eventData: DexSelectedRange) => {
@@ -113,4 +113,90 @@ describe('dex-cal component', function () {
     });
     comp.setRange(1);
   });
+
+  // it('should throw an error if only one of the start or end date Inputs are provided', () => {
+  //   expect(function() {
+  //     let fx = TestBed.createComponent(DexCalComponent);
+  //     let cmp = fx.componentInstance;
+  //     cmp.startDate = new Date();
+  //     fixture.detectChanges();
+  //   }).toThrow();
+  // });
+
+  it('should use the start & end dates if provided ', () => {
+    let d = new Date();
+    let sDate = new Date();
+    let eDate = new Date();
+    sDate.setDate(d.getDate() - 5);
+    eDate.setDate(d.getDate() - 2);
+    comp.startDate = sDate;
+    comp.endDate = eDate;
+    fixture.detectChanges();
+    expect(comp.startDate).toBeTheSameDate(sDate);
+    expect(comp.endDate).toBeTheSameDate(eDate);
+  });
+
+  it('should set the range if possible when start & end dates are provided ', () => {
+    spyOn(comp, 'setRange');
+    let d = new Date();
+    let sDate = new Date();
+    let eDate = new Date();
+    sDate.setDate(d.getDate() - 7);
+    comp.startDate = sDate;
+    comp.endDate = eDate;
+    fixture.detectChanges();
+    expect(comp.setRange).toHaveBeenCalled();
+  });
+
+  it('should be able to set a different default range', () => {
+    let options: DexCalOptions = {
+      defaultRange: 7
+    };
+    let oneWeek = new Date();
+    oneWeek.setDate(oneWeek.getDate() - 7);
+    comp.options = options;
+    fixture.detectChanges();
+    expect(comp.startDate).toBeTheSameDate(oneWeek);
+  });
+
+  it('should pick the first date it the ranges if a non existent default range is provided', () => {
+    let options: DexCalOptions = {
+      defaultRange: 2
+    };
+    comp.options = options;
+    fixture.detectChanges();
+    expect(comp.startDate).toBeTheSameDate(yesterday);
+  });
+
 });
+
+describe('test inside a test component', () => {
+  let testFixture: ComponentFixture<TestHostComponent>;
+  let testHost: TestHostComponent;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [DexCalComponent, TestHostComponent], // declare both
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    // create TestHostComponent instead of DashboardHeroComponent
+    testFixture = TestBed.createComponent(TestHostComponent);
+    testHost = testFixture.componentInstance;
+    testFixture.detectChanges(); // trigger initial data binding
+  });
+
+  // it('should use start and end date if provided and ignore default range', () => {
+  //   console.log(testHost);
+  // });
+});
+
+@Component({
+  template: `<dex-cal [options]="calendarOptions"></dex-cal>`
+})
+class TestHostComponent {
+  calendarOptions: DexCalOptions = {
+    label: 'Select'
+  }
+}

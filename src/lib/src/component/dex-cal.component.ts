@@ -20,6 +20,7 @@ export class DexCalComponent implements OnInit {
   allOptions: DexCalOptions = {};
   defaultOptions: DexCalOptions = {
     label: 'Label',
+    defaultRange: 1,
     ranges: [
       { label: 'Yesterday', daysBackFromToday: 1 },
       { label: 'Last 7 days', daysBackFromToday: 7 },
@@ -49,27 +50,42 @@ export class DexCalComponent implements OnInit {
   constructor(private elemRef: ElementRef) {
     // set today to just the date - not the time
     this.today = new Date((new Date()).toDateString());
-
-    // initialize start and end date if not passed
-    this.startDate = this.startDate || new Date();
-    this.endDate = this.endDate || this.today;
     this.cal = new Calendar();
     this.selectedMonth = this.today.getMonth();
     this.selectedYear = this.today.getFullYear();
   }
 
   ngOnInit() {
-
     // merge the options
     if (this.options) {
       this.allOptions.label = this.options.label || this.defaultOptions.label;
       this.allOptions.ranges = this.options.ranges || this.defaultOptions.ranges;
+      this.allOptions.defaultRange = this.options.defaultRange || this.defaultOptions.defaultRange;
     } else {
       this.allOptions = this.defaultOptions;
     }
 
-    const defaultRange = this.allOptions.ranges && this.allOptions.ranges.length > 0 ? this.allOptions.ranges[0].daysBackFromToday : 1;
-    this.setRange(defaultRange);
+    if (this.startDate || this.endDate) {
+      if (!this.startDate || !this.endDate) {
+        throw new Error('Please provide both Start and End date');
+      }
+
+      // if the end date is today, check if the date diff matches any ranges
+      if (this.areTheSameDate(this.endDate, this.today)) {
+        const range = Math.round((this.endDate.getTime() - this.startDate.getTime()) / 86400000);
+        if (this.allOptions.ranges.some(o => o.daysBackFromToday === range)) {
+          this.setRange(range);
+        }
+      }
+    } else {
+      // initialize start and end date if not passed
+      this.startDate = new Date();
+      this.endDate = this.today;
+      const defaultRange = this.allOptions.ranges.some(o => o.daysBackFromToday === this.allOptions.defaultRange) ?
+        this.allOptions.defaultRange : this.allOptions.ranges[0].daysBackFromToday;
+      this.setRange(defaultRange);
+    }
+
     this.setBackupDates();
   }
 

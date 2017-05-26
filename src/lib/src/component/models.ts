@@ -1,5 +1,6 @@
 export interface DexCalOptions {
   label?: string;
+  defaultRange?: number;
   ranges?: DexCalRange[];
 }
 

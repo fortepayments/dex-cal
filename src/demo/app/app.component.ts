@@ -20,7 +20,14 @@ import { DexCalOptions } from 'dex-cal';
     <section>
     <h2>Basic Control</h2>
     <br/>
+    Default Settings: 
       <dex-cal [options]="calendarOptions"></dex-cal>
+      <code>&lt;dex-cal [options]="calendarOptions"&gt;&lt;/dex-cal&gt;</code>
+    <div>
+    Custom Start and End Date: 
+      <dex-cal [options]="calendarOptions" [startDate]="startDate" [endDate]="endDate"></dex-cal>
+      <code>&lt;dex-cal [options]="calendarOptions" [startDate]="startDate" [endDate]="endDate"&gt;&lt;/dex-cal&gt;</code>
+    </div>
     </section>
   </div>
   `,
@@ -30,6 +37,12 @@ export class AppComponent {
   calendarOptions: DexCalOptions = {
     label: 'Select'
   }
+  startDate: Date;
+  endDate: Date;
+
   constructor() {
+    this.endDate = new Date();
+    this.startDate = new Date();
+    this.startDate.setDate(this.startDate.getDate() - 7);
   }
 }
