@@ -11,6 +11,7 @@ body {
     line-height: 1.6;
     height: 100%;
     width: 100%;
+    overflow-x: hidden;
     color: #626262;
     letter-spacing: 0.1rem;
     font-weight: 300;
@@ -54,22 +55,87 @@ p {
     margin-bottom: 3rem;
 }
 
+code,
+pre {
+    padding: 10px 20px;
+    max-width: 540px;
+    overflow-x: auto;
+    color: #FFC107;
+    background-color: #222;
+    white-space: pre;
+    text-shadow: 0 1px 0 #000;
+    border-radius: 6px;
+    border-bottom: 1px solid #555;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4) inset, 0 0 20px rgba(0, 0, 0, 0.2) inset;
+    font: 16px/24px 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+}
+
+.flex {
+    /*display: flex;*/
+    margin-bottom: 5rem;
+}
+
+.code-exmp {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.code-exmp-cont {
+    margin-left: 10rem;
+    border-left: 1px dashed #0d8bff;
+    padding-left: 3rem;
+    width: 100%;
+}
+
 .container {
     display: grid;
-    grid-template: repeat(4, 1fr) / repeat(2, 1fr);
-    grid-row-gap: 40px;
+    grid-template: repeat(3, 1fr);
     grid-template-areas: 'header header header' 'content content content' 'content content content';
 }
 
 header {
     grid-area: header;
+    position: relative;
     padding: 20px 40px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    /* height: 120px; */
-    background-color: #148eff;
+    justify-content: center;
+    text-align: center;
+    height: 260px;
+    width: 100%;
+    background-color: #0d8bff;
+    margin-bottom: 160px;
     color: #fff;
+}
+
+header:after {
+    /*content: "";
+    position: absolute;
+    bottom: -32.4%;
+    width: 200vw;
+    height: 1260px;
+    background: -webkit-radial-gradient(rgb(20, 142, 255), rgb(22, 169, 236));
+    background: radial-gradient(rgb(20, 142, 255), rgb(22, 169, 236));
+    border-radius: 50%;
+    z-index: -1;*/
+}
+
+#bigHalfCircle {
+    transform: rotate(180deg);
+    fill: #0d8bff;
+    position: absolute;
+    bottom: -100px;
+    width: 100%;
+}
+
+.header-content {
+    border-bottom: 1px solid #00a8ff;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
 }
 
 header p {
@@ -77,7 +143,8 @@ header p {
 }
 
 a.github-button {
-    COLOR: #ffffff;
+    position: relative;
+    color: #ffffff;
     display: inline-block;
     letter-spacing: 1px;
     text-decoration: none;
@@ -91,6 +158,8 @@ a.github-button {
 section {
     grid-area: content;
     padding: 40px 80px;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
 
