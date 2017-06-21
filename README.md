@@ -3,6 +3,8 @@
 # dex-cal
 #### Angular Calendar component with predefined ranges
 
+![dex-cal](dexcal-exmp.gif)
+
 Common tasks are present as npm scripts:
 
 - `npm start` to run a live-reload server with the demo app
