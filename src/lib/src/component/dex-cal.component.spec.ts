@@ -7,6 +7,8 @@ import { DebugElement, Component } from '@angular/core';
 import { DexCalComponent } from './dex-cal.component';
 import { customDateMatchers } from './jasmine-custom-matchers';
 import { DexSelectedRange, DexCalOptions } from './models';
+import { tick } from "@angular/core/testing";
+import { fakeAsync } from "@angular/core/testing";
 
 describe('dex-cal component', function () {
   let de: DebugElement;
@@ -167,6 +169,20 @@ describe('dex-cal component', function () {
     fixture.detectChanges();
     expect(comp.startDate).toBeTheSameDate(yesterday);
   });
+
+
+  it('should not fire events when it is disabled', () => {
+    let isRangeSelected = false;
+    spyOn(comp, 'rangeSelected').and.callThrough();
+    comp.disabled = true;
+    comp.selected.subscribe(() => {
+      isRangeSelected = true;
+    });
+    fixture.detectChanges();
+    expect(isRangeSelected).toBeFalsy();
+    expect(comp.rangeSelected).toHaveBeenCalled();
+  });
+
 
 });
 
