@@ -7,7 +7,7 @@ import { DexCalOptions } from 'dex-cal';
   <div class="container">
     <header>
       <div class="header-content">
-        <h1>Dex-Cal</h1>
+        <h1>dex-cal</h1>
         <p style="color: white">An Angular Calendar component with predefined ranges</p>
       </div>
       <div>
@@ -71,10 +71,7 @@ import { DexCalOptions } from 'dex-cal';
             </div>
             <div class="code-exmp">
               <h4>Code</h4>
-              <pre>
-                this.endDate = new Date();
-                this.startDate = new Date();
-                this.startDate.setDate(this.startDate.getDate() - 7);
+              <pre>this.endDate = new Date();<br/>this.startDate = new Date();<br/>this.startDate.setDate(this.startDate.getDate() - 7);
               </pre>
             </div>
           </div>

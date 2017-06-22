@@ -35,6 +35,11 @@
     font-size: 1.2rem;
 }
 
+.toggle.cal-disabled {
+    background: whitesmoke;
+    cursor: not-allowed;
+}
+
 .calendar-container {
     min-height: 365px;
     display: flex;
