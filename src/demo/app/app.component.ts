@@ -7,7 +7,7 @@ import { DexCalOptions } from 'dex-cal';
   <div class="container">
     <header>
       <div class="header-content">
-        <h1>Dex-Cal</h1>
+        <h1>dex-cal</h1>
         <p style="color: white">An Angular Calendar component with predefined ranges</p>
       </div>
       <div>
@@ -26,7 +26,7 @@ import { DexCalOptions } from 'dex-cal';
      <div class="flex">
        <div>
         Default Settings:
-        <dex-cal [disabled]="true" [options]="calendarOptions"></dex-cal>
+        <dex-cal [options]="calendarOptions"></dex-cal>
       </div>
       <div class="code-exmp-cont">
         <div class="code-exmp">
