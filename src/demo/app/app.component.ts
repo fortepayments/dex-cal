@@ -26,7 +26,7 @@ import { DexCalOptions } from 'dex-cal';
      <div class="flex">
        <div>
         Default Settings:
-        <dex-cal [options]="calendarOptions"></dex-cal>
+        <dex-cal [disabled]="true" [options]="calendarOptions"></dex-cal>
       </div>
       <div class="code-exmp-cont">
         <div class="code-exmp">
@@ -71,10 +71,7 @@ import { DexCalOptions } from 'dex-cal';
             </div>
             <div class="code-exmp">
               <h4>Code</h4>
-              <pre>
-                this.endDate = new Date();
-                this.startDate = new Date();
-                this.startDate.setDate(this.startDate.getDate() - 7);
+              <pre>this.endDate = new Date();<br/>this.startDate = new Date();<br/>this.startDate.setDate(this.startDate.getDate() - 7);
               </pre>
             </div>
           </div>
