@@ -1,6 +1,6 @@
 {
   "name": "dex-cal",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Datepicker with ranges",
   "main": "./dex-cal.umd.js",
   "module": "./dex-cal.es5.js",
@@ -25,12 +25,10 @@
     "build-test": "tsc -p src/lib/tsconfig.spec.json",
     "build-test:watch": "tsc -p src/lib/tsconfig.spec.json -w",
     "pretest": "npm run build-test",
-    "test":
-      "concurrently \"npm run build-test:watch\" \"karma start karma.conf.js\"",
+    "test": "concurrently \"npm run build-test:watch\" \"karma start karma.conf.js\"",
     "pretest:once": "npm run build-test",
     "test:once": "karma start karma.conf.js --single-run",
-    "preintegration":
-      "npm run build && cd integration && npm run clean && npm install",
+    "preintegration": "npm run build && cd integration && npm run clean && npm install",
     "integration": "npm run integration:aot && npm run integration:jit",
     "integration:jit": "cd integration && npm run e2e",
     "integration:aot": "cd integration && npm run e2e:aot",
