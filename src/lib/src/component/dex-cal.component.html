@@ -79,7 +79,7 @@
             </ul>
 
             <ul class="weeks" *ngFor="let week of weeks">
-                <li class="days" *ngFor="let day of week; let i=index" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}" (click)="selectDate(day)">{{day.date > 0 ? day.date: ''}}</li>
+                <li class="days" *ngFor="let day of week; let i=index" [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange}" (click)="selectDate(day); $event.stopPropagation();">{{day.date > 0 ? day.date: ''}}</li>
             </ul>
         </div>
         <footer>

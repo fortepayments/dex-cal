@@ -15,6 +15,7 @@ export class DexCalComponent implements OnInit {
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
   @Input() endDate: Date;
+  @Output() clickOutside = new EventEmitter();
 
   openCalendar = false;
   allOptions: DexCalOptions = {};
@@ -203,10 +204,23 @@ export class DexCalComponent implements OnInit {
     this.setRangeText();
   }
 
-  @HostListener('document:click', ['$event.path'])
-  onClickOutside(targetElementPath: Array<any>) {
-    let elementRefInPath = targetElementPath.find(e => e === this.elemRef.nativeElement);
-    if (!elementRefInPath) {
+  // @HostListener('window:click', ['$event.path'])
+  // onClickOutside(targetElementPath: Array<any>) {
+  //   let elementRefInPath = targetElementPath.find(e => e === this.elemRef.nativeElement);
+  //   if (!elementRefInPath) {
+  //     this.cancel();
+  //   }
+  // }
+
+
+  // https://stackoverflow.com/questions/45994882/hostlistener-onclick-for-outside-click-does-not-working-in-firefox
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(targetElement: HTMLElement): void {
+    if (!targetElement) {
+      return;
+    }
+    const clickedInside = this.elemRef.nativeElement.contains(targetElement);
+    if (!clickedInside) {
       this.cancel();
     }
   }
