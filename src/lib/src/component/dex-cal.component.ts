@@ -35,7 +35,7 @@ export class DexCalComponent implements OnInit {
   months = MONTHS;
   selectedMonth: number;
   selectedYear: number;
-  selectedRangeText: string;
+  // selectedRangeText: string;
   showOptions = false;
   numberOfDaysInRange: number;
   today: Date;
@@ -177,7 +177,7 @@ export class DexCalComponent implements OnInit {
 
   rangeSelected() {
     this.openCalendar = false;
-    this.setRangeText();
+    // this.setRangeText();
     this.setBackupDates();
     if (!this.disabled) {
       this.selected.emit({
@@ -200,7 +200,7 @@ export class DexCalComponent implements OnInit {
       this.selectedYear = this.backupSelectedYear;
     }
 
-    this.setRangeText();
+    // this.setRangeText();
   }
 
   // @HostListener('window:click', ['$event.path'])
@@ -224,11 +224,16 @@ export class DexCalComponent implements OnInit {
     }
   }
 
-  private setRangeText() {
-    this.selectedRangeText = this.startDate && this.endDate ?
-      this.selectedRangeText = `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
+  get selectedRangeText(): string {
+    return this.startDate && this.endDate ? `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
       : 'Select date range';
   }
+
+  // private setRangeText() {
+  //   this.selectedRangeText = this.startDate && this.endDate ?
+  //     this.selectedRangeText = `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
+  //     : 'Select date range';
+  // }
 
   private formatDate(date: Date) {
     return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;
