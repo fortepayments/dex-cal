@@ -15,7 +15,6 @@ export class DexCalComponent implements OnInit {
   @Output() selected = new EventEmitter<DexSelectedRange>();
   @Input() startDate: Date;
   @Input() endDate: Date;
-  @Output() clickOutside = new EventEmitter();
 
   openCalendar = false;
   allOptions: DexCalOptions = {};
