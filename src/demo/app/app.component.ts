@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
-import { DexCalOptions } from 'dex-cal';
+import { DexCalOptions } from "dex-cal";
 @Component({
-  selector: 'demo-app',
+  selector: "demo-app",
   template: `
   <div class="container">
     <header>
@@ -43,7 +43,7 @@ import { DexCalOptions } from 'dex-cal';
 
     <div class="flex">
       <div>
-        Default Settings: 
+        Default Range: 
         <dex-cal [options]="calendarOptionsWithDefaultRange"></dex-cal>
       </div>
       <div class="code-exmp-cont">
@@ -78,15 +78,15 @@ import { DexCalOptions } from 'dex-cal';
         </div>
     </section>
   </div>
-  `,
+  `
 })
 export class AppComponent {
   meaning: number;
   calendarOptions: DexCalOptions = {
-    label: 'Select'
+    label: "Select"
   };
   calendarOptionsWithDefaultRange: DexCalOptions = {
-    label: 'Select',
+    label: "Select",
     defaultRange: 7
   };
   startDate: Date;

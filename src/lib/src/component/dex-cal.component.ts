@@ -1,13 +1,21 @@
-import { Component, Input, ElementRef, EventEmitter, Output, OnInit, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  ElementRef,
+  EventEmitter,
+  Output,
+  OnInit,
+  HostListener
+} from "@angular/core";
 
-import { Calendar, MONTHS } from './calendar';
-import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from './models';
+import { Calendar, MONTHS } from "./calendar";
+import { Day, DexCalOptions, DexCalRange, DexSelectedRange } from "./models";
 
 @Component({
   moduleId: module.id,
-  selector: 'dex-cal',
-  templateUrl: './dex-cal.component.html',
-  styleUrls: ['./dex-cal.component.css']
+  selector: "dex-cal",
+  templateUrl: "./dex-cal.component.html",
+  styleUrls: ["./dex-cal.component.css"]
 })
 export class DexCalComponent implements OnInit {
   @Input() options: DexCalOptions;
@@ -19,14 +27,14 @@ export class DexCalComponent implements OnInit {
   openCalendar = false;
   allOptions: DexCalOptions = {};
   defaultOptions: DexCalOptions = {
-    label: 'Label',
+    label: "Label",
     defaultRange: 1,
     ranges: [
-      { label: 'Yesterday', daysBackFromToday: 1 },
-      { label: 'Last 7 days', daysBackFromToday: 7 },
-      { label: 'Last 30 days', daysBackFromToday: 30 },
-      { label: 'Last 60 days', daysBackFromToday: 60 },
-      { label: 'Last 90 days', daysBackFromToday: 90 }
+      { label: "Yesterday", daysBackFromToday: 1 },
+      { label: "Last 7 days", daysBackFromToday: 7 },
+      { label: "Last 30 days", daysBackFromToday: 30 },
+      { label: "Last 60 days", daysBackFromToday: 60 },
+      { label: "Last 90 days", daysBackFromToday: 90 }
     ]
   };
 
@@ -49,7 +57,7 @@ export class DexCalComponent implements OnInit {
 
   constructor(private elemRef: ElementRef) {
     // set today to just the date - not the time
-    this.today = new Date((new Date()).toDateString());
+    this.today = new Date(new Date().toDateString());
     this.cal = new Calendar();
     this.selectedMonth = this.today.getMonth();
     this.selectedYear = this.today.getFullYear();
@@ -59,20 +67,24 @@ export class DexCalComponent implements OnInit {
     // merge the options
     if (this.options) {
       this.allOptions.label = this.options.label || this.defaultOptions.label;
-      this.allOptions.ranges = this.options.ranges || this.defaultOptions.ranges;
-      this.allOptions.defaultRange = this.options.defaultRange || this.defaultOptions.defaultRange;
+      this.allOptions.ranges =
+        this.options.ranges || this.defaultOptions.ranges;
+      this.allOptions.defaultRange =
+        this.options.defaultRange || this.defaultOptions.defaultRange;
     } else {
       this.allOptions = this.defaultOptions;
     }
 
     if (this.startDate || this.endDate) {
       if (!this.startDate || !this.endDate) {
-        throw new Error('Please provide both Start and End date');
+        throw new Error("Please provide both Start and End date");
       }
 
       // if the end date is today, check if the date diff matches any ranges
       if (this.areTheSameDate(this.endDate, this.today)) {
-        const range = Math.round((this.endDate.getTime() - this.startDate.getTime()) / 86400000);
+        const range = Math.round(
+          (this.endDate.getTime() - this.startDate.getTime()) / 86400000
+        );
         if (this.allOptions.ranges.some(o => o.daysBackFromToday === range)) {
           this.setRange(range);
         }
@@ -81,8 +93,11 @@ export class DexCalComponent implements OnInit {
       // initialize start and end date if not passed
       this.startDate = new Date();
       this.endDate = this.today;
-      const defaultRange = this.allOptions.ranges.some(o => o.daysBackFromToday === this.allOptions.defaultRange) ?
-        this.allOptions.defaultRange : this.allOptions.ranges[0].daysBackFromToday;
+      const defaultRange = this.allOptions.ranges.some(
+        o => o.daysBackFromToday === this.allOptions.defaultRange
+      )
+        ? this.allOptions.defaultRange
+        : this.allOptions.ranges[0].daysBackFromToday;
       this.setRange(defaultRange);
     }
 
@@ -121,7 +136,7 @@ export class DexCalComponent implements OnInit {
   setRange(days: number) {
     this.isCustomRange = false;
     this.numberOfDaysInRange = days;
-    this.startDate = new Date((new Date()).toDateString());
+    this.startDate = new Date(new Date().toDateString());
     this.startDate.setDate(this.today.getDate() - days);
     this.endDate = this.today;
     this.getWeeks();
@@ -129,7 +144,11 @@ export class DexCalComponent implements OnInit {
   }
 
   setCustomRange() {
+    this.startDate = null;
+    this.endDate = null;
     this.isCustomRange = true;
+    this.getWeeks();
+    this.highlightCustom = true;
   }
 
   toggleCalendar() {
@@ -148,10 +167,14 @@ export class DexCalComponent implements OnInit {
       this.startDate = this.endDate = undefined;
     }
     if (!this.startDate) {
-      this.startDate = new Date(`${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`);
+      this.startDate = new Date(
+        `${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`
+      );
       this.endDate = undefined;
     } else if (!this.endDate) {
-      this.endDate = new Date(`${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`);
+      this.endDate = new Date(
+        `${this.selectedMonth + 1}/${day.date}/${this.selectedYear}`
+      );
       // the startDate should be before endDate
       if (this.startDate > this.endDate) {
         let temp = this.startDate;
@@ -160,7 +183,9 @@ export class DexCalComponent implements OnInit {
       }
       this.startCustomRangeSelection = false;
     } else {
-      this.startDate = new Date(`${this.selectedMonth}/${day.date}/${this.selectedYear}`);
+      this.startDate = new Date(
+        `${this.selectedMonth}/${day.date}/${this.selectedYear}`
+      );
       day.isSelected = true;
     }
     this.getWeeks();
@@ -168,8 +193,11 @@ export class DexCalComponent implements OnInit {
 
   areTheSameDate(d1: Date, d2: Date) {
     if (d1 && d2) {
-      return !!(d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth()
-        && d1.getFullYear() === d2.getFullYear());
+      return !!(
+        d1.getDate() === d2.getDate() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getFullYear() === d2.getFullYear()
+      );
     } else {
       return false;
     }
@@ -199,21 +227,10 @@ export class DexCalComponent implements OnInit {
     if (this.backupSelectedYear) {
       this.selectedYear = this.backupSelectedYear;
     }
-
-    // this.setRangeText();
   }
 
-  // @HostListener('window:click', ['$event.path'])
-  // onClickOutside(targetElementPath: Array<any>) {
-  //   let elementRefInPath = targetElementPath.find(e => e === this.elemRef.nativeElement);
-  //   if (!elementRefInPath) {
-  //     this.cancel();
-  //   }
-  // }
-
-
   // https://stackoverflow.com/questions/45994882/hostlistener-onclick-for-outside-click-does-not-working-in-firefox
-  @HostListener('document:click', ['$event.target'])
+  @HostListener("document:click", ["$event.target"])
   onClickOutside(targetElement: HTMLElement): void {
     if (!targetElement) {
       return;
@@ -225,15 +242,12 @@ export class DexCalComponent implements OnInit {
   }
 
   get selectedRangeText(): string {
-    return this.startDate && this.endDate ? `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
-      : 'Select date range';
+    return this.startDate && this.endDate
+      ? `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(
+          this.endDate
+        )}`
+      : "Select date range";
   }
-
-  // private setRangeText() {
-  //   this.selectedRangeText = this.startDate && this.endDate ?
-  //     this.selectedRangeText = `${this.formatDate(this.startDate)}  ⇢  ${this.formatDate(this.endDate)}`
-  //     : 'Select date range';
-  // }
 
   private formatDate(date: Date) {
     return `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`;
@@ -242,13 +256,18 @@ export class DexCalComponent implements OnInit {
   private getWeeks() {
     this.weeks = [];
     if (this.selectedYear !== undefined && this.selectedMonth !== undefined) {
-      let daysInMonth = this.cal.monthDays(this.selectedYear, this.selectedMonth);
+      let daysInMonth = this.cal.monthDays(
+        this.selectedYear,
+        this.selectedMonth
+      );
       daysInMonth.forEach((week: number[]) => {
         let daysOfWeek: Day[] = [];
         week.forEach((day: number) => {
           daysOfWeek.push({
             date: day,
-            isSelected: this.isSameDate(this.startDate, day) || this.isSameDate(this.endDate, day),
+            isSelected:
+              this.isSameDate(this.startDate, day) ||
+              this.isSameDate(this.endDate, day),
             isInRange: this.isInRange(day)
           });
         });
@@ -264,27 +283,48 @@ export class DexCalComponent implements OnInit {
       return false;
     }
 
-    return !!(expected.getDate() === actual && expected.getMonth() === this.selectedMonth
-      && expected.getFullYear() === this.selectedYear);
+    return !!(
+      expected.getDate() === actual &&
+      expected.getMonth() === this.selectedMonth &&
+      expected.getFullYear() === this.selectedYear
+    );
   }
 
   private isInRange(day: number): boolean {
     if (this.startDate && this.endDate && day > 0) {
-      let dateBeingChecked = new Date(`${this.selectedMonth + 1}/${day}/${this.selectedYear}`);
-      return this.startDate <= dateBeingChecked && this.endDate >= dateBeingChecked;
+      let dateBeingChecked = new Date(
+        `${this.selectedMonth + 1}/${day}/${this.selectedYear}`
+      );
+      return (
+        this.startDate <= dateBeingChecked && this.endDate >= dateBeingChecked
+      );
     }
 
     return false;
   }
 
   private highlightRange() {
-    if (this.allOptions && this.allOptions.ranges && this.startDate && this.endDate) {
+    if (
+      this.allOptions &&
+      this.allOptions.ranges &&
+      this.startDate &&
+      this.endDate
+    ) {
       this.highlightCustom = false;
-      this.numberOfDaysInRange = Math.round(Math.abs((this.endDate.getTime() - this.startDate.getTime()) / (24 * 60 * 60 * 1000)));
+      this.numberOfDaysInRange = Math.round(
+        Math.abs(
+          (this.endDate.getTime() - this.startDate.getTime()) /
+            (24 * 60 * 60 * 1000)
+        )
+      );
 
       // everything except Custom end at today
       if (this.areTheSameDate(this.endDate, this.today)) {
-        if (!this.allOptions.ranges.some(r => r.daysBackFromToday === this.numberOfDaysInRange)) {
+        if (
+          !this.allOptions.ranges.some(
+            r => r.daysBackFromToday === this.numberOfDaysInRange
+          )
+        ) {
           this.highlightCustom = true;
         }
       } else {
