@@ -1,18 +1,27 @@
-[![Build Status](https://travis-ci.org/fortepayments/dex-cal.svg?branch=master)](https://travis-ci.org/fortepayments/dex-cal)
+# DexCal2
 
-# dex-cal
-#### Angular Calendar component with predefined ranges
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.3.
 
-![dex-cal](dexcal-exmp.gif)
+## Development server
 
-Common tasks are present as npm scripts:
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-- `npm start` to run a live-reload server with the demo app
-- `npm run test` to test in watch mode, or `npm run test:once` to only run once
-- `npm run build` to build the library
-- `npm run lint` to lint 
-- `npm run clean` to clean
-- `npm install ./relative/path/to/lib` after `npm run build` to test locally in another app
+## Code scaffolding
 
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Based off of [Angular QuickStart Lib](https://github.com/filipesilva/angular-quickstart-lib)
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

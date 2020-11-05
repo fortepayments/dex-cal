@@ -1,0 +1,164 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1, 
+  "newProjectRoot": "projects",
+  "projects": {
+    "dex-cal2": {
+      "projectType": "library",
+      "root": "projects/dex-cal2",
+      "sourceRoot": "projects/dex-cal2/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/dex-cal2/tsconfig.lib.json",
+            "project": "projects/dex-cal2/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dex-cal2/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dex-cal2/src/test.ts",
+            "tsConfig": "projects/dex-cal2/tsconfig.spec.json",
+            "karmaConfig": "projects/dex-cal2/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dex-cal2/tsconfig.lib.json",
+              "projects/dex-cal2/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "dex-cal2-demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/dex-cal2-demo",
+      "sourceRoot": "projects/dex-cal2-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/dex-cal2-demo",
+            "index": "projects/dex-cal2-demo/src/index.html",
+            "main": "projects/dex-cal2-demo/src/main.ts",
+            "polyfills": "projects/dex-cal2-demo/src/polyfills.ts",
+            "tsConfig": "projects/dex-cal2-demo/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/dex-cal2-demo/src/favicon.ico",
+              "projects/dex-cal2-demo/src/assets"
+            ],
+            "styles": [
+              "projects/dex-cal2-demo/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/dex-cal2-demo/src/environments/environment.ts",
+                  "with": "projects/dex-cal2-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "dex-cal2-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "dex-cal2-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "dex-cal2-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dex-cal2-demo/src/test.ts",
+            "polyfills": "projects/dex-cal2-demo/src/polyfills.ts",
+            "tsConfig": "projects/dex-cal2-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/dex-cal2-demo/karma.conf.js",
+            "assets": [
+              "projects/dex-cal2-demo/src/favicon.ico",
+              "projects/dex-cal2-demo/src/assets"
+            ],
+            "styles": [
+              "projects/dex-cal2-demo/src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dex-cal2-demo/tsconfig.app.json",
+              "projects/dex-cal2-demo/tsconfig.spec.json",
+              "projects/dex-cal2-demo/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/dex-cal2-demo/e2e/protractor.conf.js",
+            "devServerTarget": "dex-cal2-demo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "dex-cal2-demo:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "dex-cal2"
+}
