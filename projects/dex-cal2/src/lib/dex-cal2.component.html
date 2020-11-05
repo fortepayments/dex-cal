@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="left-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        <path d="M0 0h24v24H0z" fill="none" />
+    </symbol>
+    <symbol id="right-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+        <path d="M0 0h24v24H0z" fill="none" />
+    </symbol>
+</svg>
+
+<div class="toggle" [class.cal-disabled]="disabled" (click)="toggleCalendar()">
+    <span>{{allOptions.label}}:</span>
+    <span>{{selectedRangeText}}</span>
+    <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z" />
+        <path d="M0-.75h24v24H0z" fill="none" />
+    </svg>
+</div>
+
+<div data-calendar="dex">
+
+    <div class="calendar-container" *ngIf="openCalendar">
+
+        <div [class.active]="showOptions" class="options">
+            <button *ngIf="showOptions" (click)="showOptions = false" class="hide-options">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+            </button>
+
+            <ul>
+                <li *ngFor="let range of allOptions.ranges" (click)="setRange(range.daysBackFromToday)"
+                    [ngClass]="{'selected-range': (numberOfDaysInRange === range.daysBackFromToday) && areTheSameDate(endDate, today)}">
+                    <a>{{range.label}}</a>
+                </li>
+                <li (click)="setCustomRange()" [ngClass]="{'selected-range': highlightCustom}">
+                    <a>Custom</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="calendar">
+
+            <div class="contain">
+                <div *ngIf="startDate; else noStart" class="current-date-selected">
+                    <span>{{startDate | date:'dd'}}</span>
+                    <div>
+                        <span>{{startDate | date:'EEE'}}</span>
+                        <span>{{startDate | date:'MMM'}}</span>
+                    </div>
+                    <span>{{startDate | date:'yy'}}</span>
+                </div>
+
+                <ng-template #noStart>
+                    <div class="current-date-selected">
+                        <span>Start</span>
+                    </div>
+                </ng-template>
+
+                <div [class.end-date--line]="endDate"></div>
+
+                <div *ngIf="endDate; else noEnd" class="current-date-selected end-date">
+                    <span>{{endDate | date:'dd'}}</span>
+                    <div>
+                        <span>{{endDate | date:'EEE'}}</span>
+                        <span>{{endDate | date:'MMM'}}</span>
+                    </div>
+                    <span>{{endDate | date:'yy'}}</span>
+                </div>
+
+                <ng-template #noEnd>
+                    <div class="current-date-selected end-date no-end">
+                        <span>End</span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div class="contain contain-form">
+                <form [formGroup]="dateForm" novalidate>
+                    <input class="form-control" type="text" id="startDate" formControlName="startDateRange"
+                        [value]="!startDate ? '' : formatFormDate(startDate)" [textMask]="{mask: dateMask}"
+                        placeholder="mm/dd/yyyy" />
+                    <input class="form-control" type="text" id="endDate" formControlName="endDateRange"
+                        [value]="!endDate ? '' : formatFormDate(endDate)" [textMask]="{mask: dateMask}"
+                        placeholder="mm/dd/yyyy" />
+                </form>
+            </div>
+
+            <div class="contain contain-select">
+                <div class="control-group">
+                    <div class="select-control">
+                        <div class="form-control select" #monthSelect (click)="toggleMm = !toggleMm">
+                            {{months[selectedMonth]}}
+                        </div>
+                        <ul [class.show]="toggleMm" class="select-menu">
+                            <div>
+                                <div class="m1" *ngFor="let month of months; let i = index"
+                                    (click)="onMonthSelect(month)">
+                                    <div *ngIf="i+1 <= 6">{{month}} <span>0{{i + 1}}</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="m1" *ngFor="let month of months; let i = index"
+                                    (click)="onMonthSelect(month)">
+                                    <div *ngIf="i+1 > 6">{{month}} <span>{{i + 1}}</span></div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                    <button class="arrow" (click)="previousMonth()">
+                        <svg class="svg-icon">
+                            <use href="#left-arrow"></use>
+                        </svg>
+                    </button>
+                    <button class="arrow" (click)="nextMonth()">
+                        <svg class="svg-icon">
+                            <use href="#right-arrow"></use>
+                        </svg>
+                    </button>
+                </div>
+                <div class="control-group">
+                    <div class="select-control">
+                        <div class="form-control select" #yearSelect (click)="toggleYr = !toggleYr">
+                            {{selectedYear}}
+                        </div>
+                        <ul [class.show]="toggleYr" class="select-menu year">
+                            <li class="year" *ngFor="let year of years; let i = index"
+                                (click)="onYearSelect(year);$event.stopPropagation()">
+                                {{year}}
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="arrow" (click)="previousYear()">
+                        <svg class="svg-icon">
+                            <use href="#left-arrow"></use>
+                        </svg>
+                    </button>
+                    <button class="arrow" (click)="nextYear()">
+                        <svg class="svg-icon">
+                            <use href="#right-arrow"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="weeks-container">
+                <ul class="weekdays">
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sun' || (endDate | date:'EEE') === 'Sun'}">
+                        SUN</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Mon' || (endDate | date:'EEE') === 'Mon'}">
+                        MON</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Tue' || (endDate | date:'EEE') === 'Tue'}">
+                        TUE</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Wed' || (endDate | date:'EEE') === 'Wed'}">
+                        WED</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Thu' || (endDate | date:'EEE') === 'Thu'}">
+                        THU</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Fri' || (endDate | date:'EEE') === 'Fri'}">
+                        FRI</li>
+                    <li
+                        [ngClass]="{'selected-weekday': (startDate | date:'EEE') === 'Sat' || (endDate | date:'EEE') === 'Sat'}">
+                        SAT</li>
+                </ul>
+                <!--  -->
+                <ul class="weeks" *ngFor="let week of weeks">
+                    <li class="days" *ngFor="let day of week; let i=index"
+                        [ngClass]="{'selected-date': day.isSelected, 'date-in-range': day.isInRange, 'start-dte': day.isSelected && day.date.toString() === (startDate | date:'d'), 'end-dte': day.isSelected && day.date.toString() === (endDate | date:'d')}">
+                        <span (click)="selectDate(day);$event.stopPropagation()">
+                            {{day.date > 0 ? day.date : ''}}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <footer class="contain">
+                <button class="show-options" (click)="showOptions = true">Options</button>
+                <div>
+                    <button [disabled]="!isCustomRange || !startDate || !endDate"
+                        (click)="rangeSelected()">Apply</button>
+                    <button class="cancel" (click)="cancel()">Cancel</button>
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+</div>
